@@ -124,20 +124,20 @@ function Categories() {
                                 <tr key={cat.id} className="hover:bg-[var(--bg-primary)] transition-colors group">
                                     <td className="p-6 text-sm font-bold text-[var(--text-primary)]">
                                         {cat.name}
-                                        {cat.isSystem && <span className="ml-2 text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-black tracking-widest uppercase">System</span>}
+                                        {cat.isSystem && <span className="ml-2 text-[10px] bg-[var(--bg-primary)] text-[var(--text-secondary)] px-1.5 py-0.5 rounded font-black tracking-widest uppercase">System</span>}
                                     </td>
                                     <td className="p-6 text-right space-x-6">
                                         {!cat.isSystem && (
                                             <>
                                                 <button
                                                     onClick={() => handleEdit(cat)}
-                                                    className="text-blue-500 hover:text-blue-600 font-black text-xs uppercase tracking-widest transition-colors"
+                                                    className="text-habi-primary hover:brightness-110 font-black text-xs uppercase tracking-widest transition-colors"
                                                 >
                                                     Edit
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(cat.id)}
-                                                    className="text-[var(--text-secondary)] hover:text-rose-500 font-black text-xs uppercase tracking-widest transition-colors"
+                                                    className="text-[var(--text-secondary)] hover:text-habi-error font-black text-xs uppercase tracking-widest transition-colors"
                                                 >
                                                     Remove
                                                 </button>
@@ -156,13 +156,13 @@ function Categories() {
                         <div key={cat.id} className="p-4 flex justify-between items-center hover:bg-[var(--bg-primary)] transition-colors">
                             <span className="text-sm font-bold text-[var(--text-primary)]">
                                 {cat.name}
-                                {cat.isSystem && <span className="ml-2 text-[9px] bg-slate-100 text-slate-500 px-1 py-0.5 rounded font-black uppercase tracking-tighter">System</span>}
+                                {cat.isSystem && <span className="ml-2 text-[9px] bg-[var(--bg-primary)] text-[var(--text-secondary)] px-1 py-0.5 rounded font-black uppercase tracking-tighter">System</span>}
                             </span>
                             {!cat.isSystem && (
                                 <div className="flex space-x-4">
                                     <button
                                         onClick={() => handleEdit(cat)}
-                                        className="text-blue-500 font-black text-[10px] uppercase tracking-wider"
+                                        className="text-habi-primary font-black text-[10px] uppercase tracking-wider"
                                     >
                                         Edit
                                     </button>

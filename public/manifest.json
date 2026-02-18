@@ -1,11 +1,11 @@
 {
-    "name": "fintrack personal finance",
-    "short_name": "fintrack",
+    "name": "habi",
+    "short_name": "habi",
     "description": "Premium personal finance tracking and budgeting.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#0f172a",
-    "theme_color": "#3b82f6",
+    "background_color": "#F7F5F0",
+    "theme_color": "#243763",
     "icons": [
         {
             "src": "/icon-192.png",

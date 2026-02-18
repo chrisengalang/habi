@@ -176,7 +176,7 @@ function Transactions({ selectedMonth }) {
                 </div>
             </header>
 
-            <section className="enterprise-card p-6 lg:p-8 bg-[var(--bg-secondary)] border-l-4 border-l-blue-500">
+            <section className="enterprise-card p-6 lg:p-8 bg-[var(--bg-secondary)] border-l-4 border-l-habi-primary">
                 <div className="flex justify-between items-center mb-6">
                     <h3 className="text-lg font-bold text-[var(--text-primary)]">
                         {editingId ? "Update Transaction" : "Record Transaction"}
@@ -184,7 +184,7 @@ function Transactions({ selectedMonth }) {
                     {editingId && (
                         <button
                             onClick={() => { setEditingId(null); setFormData(prev => ({ ...prev, description: '', amount: '' })); }}
-                            className="text-xs font-bold text-rose-500 hover:text-rose-600 uppercase tracking-widest flex items-center gap-1.5 transition-colors"
+                            className="text-xs font-bold text-habi-error hover:brightness-110 uppercase tracking-widest flex items-center gap-1.5 transition-colors"
                         >
                             <X size={14} /> Cancel Edit
                         </button>
@@ -239,7 +239,7 @@ function Transactions({ selectedMonth }) {
                             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                         </select>
                     </div>
-                    <button type="submit" className={`enterprise-button-primary w-full ${editingId ? 'bg-indigo-600 hover:bg-indigo-700' : ''}`}>
+                    <button type="submit" className={`enterprise-button-primary w-full ${editingId ? 'bg-habi-gold hover:brightness-110' : ''}`}>
                         {editingId ? "Update" : "Save"}
                     </button>
                 </form>
@@ -253,7 +253,7 @@ function Transactions({ selectedMonth }) {
                             placeholder="Filter by description..."
                             value={filterText}
                             onChange={e => setFilterText(e.target.value)}
-                            className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-full px-10 sm:px-12 py-2 sm:py-2.5 text-base focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-full px-10 sm:px-12 py-2 sm:py-2.5 text-base focus:ring-2 focus:ring-[var(--accent-color)] outline-none"
                         />
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]">
                             <Search size={16} />
@@ -279,7 +279,7 @@ function Transactions({ selectedMonth }) {
                     </div>
                     <button
                         onClick={() => { setFilterText(''); setFilterCategory(''); setFilterBudgetItem(''); }}
-                        className="w-full sm:w-auto text-[10px] sm:text-xs font-bold text-blue-500 hover:text-blue-600 uppercase tracking-widest transition-colors py-1 sm:py-0"
+                        className="w-full sm:w-auto text-[10px] sm:text-xs font-bold text-[var(--accent-gold)] hover:brightness-110 uppercase tracking-widest transition-colors py-1 sm:py-0"
                     >
                         Clear Filters
                     </button>
@@ -289,16 +289,16 @@ function Transactions({ selectedMonth }) {
                     <table className="w-full text-left">
                         <thead>
                             <tr className="bg-[var(--bg-secondary)] text-[var(--text-secondary)] border-b border-[var(--border-color)]">
-                                <th className="p-6 text-xs font-bold uppercase tracking-wider cursor-pointer hover:text-blue-500 transition-colors" onClick={() => requestSort('date')}>
+                                <th className="p-6 text-xs font-bold uppercase tracking-wider cursor-pointer hover:text-habi-primary transition-colors" onClick={() => requestSort('date')}>
                                     Date {sortConfig.key === 'date' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                                 </th>
-                                <th className="p-6 text-xs font-bold uppercase tracking-wider cursor-pointer hover:text-blue-500 transition-colors" onClick={() => requestSort('description')}>
+                                <th className="p-6 text-xs font-bold uppercase tracking-wider cursor-pointer hover:text-habi-primary transition-colors" onClick={() => requestSort('description')}>
                                     Description {sortConfig.key === 'description' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                                 </th>
-                                <th className="p-6 text-xs font-bold uppercase tracking-wider cursor-pointer hover:text-blue-500 transition-colors" onClick={() => requestSort('budgetItem')}>
+                                <th className="p-6 text-xs font-bold uppercase tracking-wider cursor-pointer hover:text-habi-primary transition-colors" onClick={() => requestSort('budgetItem')}>
                                     Budget Item {sortConfig.key === 'budgetItem' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                                 </th>
-                                <th className="p-6 text-xs font-bold uppercase tracking-wider cursor-pointer hover:text-blue-500 transition-colors" onClick={() => requestSort('category')}>
+                                <th className="p-6 text-xs font-bold uppercase tracking-wider cursor-pointer hover:text-habi-primary transition-colors" onClick={() => requestSort('category')}>
                                     Category {sortConfig.key === 'category' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                                 </th>
                                 <th className="p-6 text-right text-xs font-bold uppercase tracking-wider">Amount</th>
@@ -311,29 +311,29 @@ function Transactions({ selectedMonth }) {
                                     <td className="p-6 text-sm text-[var(--text-secondary)] font-medium">{t.date}</td>
                                     <td className="p-6 text-sm font-bold text-[var(--text-primary)]">{t.description}</td>
                                     <td className="p-6">
-                                        <span className="px-3 py-1 bg-slate-500/10 text-slate-500 rounded-full text-xs font-black uppercase tracking-tighter">
+                                        <span className="px-3 py-1 bg-[var(--text-light)]/10 text-[var(--text-secondary)] rounded-full text-xs font-black uppercase tracking-tighter">
                                             {t.budgetItemName || t.budgetItem?.name || '-'}
                                         </span>
                                     </td>
                                     <td className="p-6">
-                                        <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-black uppercase tracking-tighter">
+                                        <span className="px-3 py-1 bg-habi-primary/10 text-habi-primary rounded-full text-xs font-black uppercase tracking-tighter">
                                             {t.categoryName || t.category?.name || '-'}
                                         </span>
                                     </td>
                                     <td className="p-6 text-right">
-                                        <span className="text-sm font-black text-rose-500">-${t.amount?.toFixed(2)}</span>
+                                        <span className="text-sm font-black text-habi-error">-${t.amount?.toFixed(2)}</span>
                                     </td>
                                     <td className="p-6 text-right space-x-2">
                                         <button
                                             onClick={() => handleEdit(t)}
-                                            className="p-2 text-[var(--text-secondary)] hover:text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors"
+                                            className="p-2 text-[var(--text-secondary)] hover:text-habi-primary hover:bg-habi-primary/10 rounded-lg transition-colors"
                                             title="Edit Transaction"
                                         >
                                             <Edit2 size={16} />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(t.id)}
-                                            className="p-2 text-[var(--text-secondary)] hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors"
+                                            className="p-2 text-[var(--text-secondary)] hover:text-habi-error hover:bg-habi-error/10 rounded-lg transition-colors"
                                             title="Delete Transaction"
                                         >
                                             <Trash2 size={16} />
@@ -352,7 +352,7 @@ function Transactions({ selectedMonth }) {
                             <div className="flex flex-col space-y-1.5 flex-1 pr-4">
                                 <div className="flex items-center space-x-2">
                                     <span className="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">{t.date}</span>
-                                    <span className={`text-[9px] px-1.5 py-0.5 rounded font-black uppercase border ${t.budgetItem || t.budgetItemName ? "border-slate-500/20 text-slate-500 bg-slate-500/5" : "border-blue-500/20 text-blue-500 bg-blue-500/5"}`}>
+                                    <span className={`text-[9px] px-1.5 py-0.5 rounded font-black uppercase border ${t.budgetItem || t.budgetItemName ? "border-[var(--text-light)]/20 text-[var(--text-secondary)] bg-[var(--bg-primary)]" : "border-habi-primary/20 text-habi-primary bg-habi-primary/5"}`}>
                                         {t.budgetItemName || t.budgetItem?.name || t.categoryName || t.category?.name || 'General'}
                                     </span>
                                 </div>
@@ -360,17 +360,17 @@ function Transactions({ selectedMonth }) {
                             </div>
                             <div className="flex items-center space-x-3">
                                 <div className="text-right">
-                                    <span className="text-base font-black text-rose-500">-${t.amount?.toFixed(2)}</span>
+                                    <span className="text-base font-black text-habi-error">-${t.amount?.toFixed(2)}</span>
                                 </div>
                                 <button
                                     onClick={() => handleEdit(t)}
-                                    className="p-2 text-[var(--text-secondary)] hover:text-blue-500 bg-[var(--bg-primary)] rounded-lg transition-colors border border-[var(--border-color)]"
+                                    className="p-2 text-[var(--text-secondary)] hover:text-habi-primary bg-[var(--bg-primary)] rounded-lg transition-colors border border-[var(--border-color)]"
                                 >
                                     <Edit2 size={16} />
                                 </button>
                                 <button
                                     onClick={() => handleDelete(t.id)}
-                                    className="p-2 text-[var(--text-secondary)] hover:text-rose-500 bg-[var(--bg-primary)] rounded-lg transition-colors border border-[var(--border-color)]"
+                                    className="p-2 text-[var(--text-secondary)] hover:text-habi-error bg-[var(--bg-primary)] rounded-lg transition-colors border border-[var(--border-color)]"
                                 >
                                     <Trash2 size={16} />
                                 </button>

@@ -4,25 +4,45 @@
 
 @layer base {
   :root {
-    --bg-primary: #f8fafc;
-    --bg-secondary: #ffffff;
-    --text-primary: #0f172a;
-    --text-secondary: #64748b;
-    --border-color: #e2e8f0;
-    --sidebar-bg: #1e293b;
-    --sidebar-text: #f8fafc;
-    --accent-color: #2563eb;
+    /* Habi Warm Filipino Weave — Light */
+    --bg-primary: #F7F5F0;
+    --bg-secondary: #FFFFFF;
+    --text-primary: #1A1A1A;
+    --text-secondary: #5A5A5A;
+    --text-light: #A7A7A7;
+    --border-color: #E4E4E4;
+    --sidebar-bg: #243763;
+    --sidebar-text: #FFFFFF;
+    --accent-color: #243763;
+    --accent-gold: #CFA85B;
+    --accent-rust: #A65341;
+    --accent-cream: #FAF3E0;
+    --accent-green: #2E5E42;
+    --accent-blue: #8DBFC5;
+    --color-success: #3E7F63;
+    --color-warning: #D39B22;
+    --color-error: #B9473D;
   }
 
   .dark {
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --border-color: #334155;
-    --sidebar-bg: #020617;
-    --sidebar-text: #f8fafc;
-    --accent-color: #3b82f6;
+    /* Habi Warm Filipino Weave — Dark */
+    --bg-primary: #121820;
+    --bg-secondary: #1A2332;
+    --text-primary: #FAF3E0;
+    --text-secondary: #A7A7A7;
+    --text-light: #5A5A5A;
+    --border-color: #2A3545;
+    --sidebar-bg: #0E1A2E;
+    --sidebar-text: #FAF3E0;
+    --accent-color: #CFA85B;
+    --accent-gold: #CFA85B;
+    --accent-rust: #A65341;
+    --accent-cream: #FAF3E0;
+    --accent-green: #3E7F63;
+    --accent-blue: #8DBFC5;
+    --color-success: #3E7F63;
+    --color-warning: #D39B22;
+    --color-error: #B9473D;
   }
 
   body {
@@ -38,11 +58,11 @@
   }
 
   .enterprise-input {
-    @apply w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg p-2.5 text-base focus:ring-2 focus:ring-blue-500 outline-none transition-all;
+    @apply w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg p-2.5 text-base text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--accent-color)] outline-none transition-all;
   }
 
   .enterprise-button-primary {
-    @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg transition-all shadow-sm active:scale-95;
+    @apply bg-[var(--accent-color)] hover:brightness-110 text-white font-semibold py-2.5 px-5 rounded-lg transition-all shadow-sm active:scale-95;
   }
 
   .enterprise-button-secondary {

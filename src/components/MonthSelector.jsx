@@ -18,7 +18,7 @@ function MonthSelector({ selectedDate, onDateChange }) {
                 type="month"
                 value={value}
                 onChange={handleChange}
-                className="p-1 px-3 rounded bg-transparent font-medium text-[var(--text-primary)] outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer appearance-none"
+                className="p-1 px-3 rounded bg-transparent font-medium text-[var(--text-primary)] outline-none focus:ring-2 focus:ring-[var(--accent-color)] cursor-pointer appearance-none"
             />
         </div>
     );

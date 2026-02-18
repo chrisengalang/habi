@@ -124,7 +124,7 @@ function Budgets({ selectedMonth }) {
             {!budget ? (
                 <div className="enterprise-card p-6 sm:p-8 lg:p-16 text-center space-y-6 lg:space-y-8 bg-gradient-to-br from-[var(--bg-secondary)] to-[var(--bg-primary)]">
                     <div className="space-y-3 sm:space-y-4">
-                        <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-blue-500/10 rounded-full flex items-center justify-center text-blue-500 shadow-inner">
+                        <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-habi-primary/10 rounded-full flex items-center justify-center text-habi-primary shadow-inner">
                             <Wallet size={28} />
                         </div>
                         <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-[var(--text-primary)]">Start your budget month</h3>
@@ -185,7 +185,7 @@ function Budgets({ selectedMonth }) {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                         {budget.budgetItems && budget.budgetItems.map(item => (
-                            <div key={item.id} className="enterprise-card p-5 group hover:border-blue-500/50 transition-colors">
+                            <div key={item.id} className="enterprise-card p-5 group hover:border-habi-gold/50 transition-colors">
                                 <div className="flex justify-between items-start mb-4 sm:mb-6">
                                     <div className="flex-1 mr-4">
                                         {editingId === item.id ? (
@@ -203,19 +203,19 @@ function Budgets({ selectedMonth }) {
                                     <div className="flex space-x-0.5 sm:space-x-1">
                                         {editingId === item.id ? (
                                             <>
-                                                <button onClick={() => handleUpdateItem(item.id)} className="p-2 text-emerald-500 hover:bg-emerald-500/10 rounded-lg transition-colors">
+                                                <button onClick={() => handleUpdateItem(item.id)} className="p-2 text-habi-success hover:bg-habi-success/10 rounded-lg transition-colors">
                                                     <Check size={18} />
                                                 </button>
-                                                <button onClick={cancelEditing} className="p-2 text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors">
+                                                <button onClick={cancelEditing} className="p-2 text-habi-error hover:bg-habi-error/10 rounded-lg transition-colors">
                                                     <X size={18} />
                                                 </button>
                                             </>
                                         ) : (
                                             <>
-                                                <button onClick={() => startEditing(item)} className="p-2 text-[var(--text-secondary)] hover:text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100">
+                                                <button onClick={() => startEditing(item)} className="p-2 text-[var(--text-secondary)] hover:text-habi-primary hover:bg-habi-primary/10 rounded-lg transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100">
                                                     <Edit2 size={16} />
                                                 </button>
-                                                <button onClick={() => deleteItem(item.id)} className="p-2 text-[var(--text-secondary)] hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100">
+                                                <button onClick={() => deleteItem(item.id)} className="p-2 text-[var(--text-secondary)] hover:text-habi-error hover:bg-habi-error/10 rounded-lg transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100">
                                                     <Receipt size={16} />
                                                 </button>
                                             </>
@@ -243,14 +243,14 @@ function Budgets({ selectedMonth }) {
 
                                     <div className="w-full bg-[var(--bg-primary)] rounded-full h-2.5 sm:h-3 overflow-hidden shadow-inner border border-[var(--border-color)]">
                                         <div
-                                            className={`h-full rounded-full transition-all duration-500 ${(item.spent || 0) > item.amount ? 'bg-rose-500' : 'bg-blue-600'
+                                            className={`h-full rounded-full transition-all duration-500 ${(item.spent || 0) > item.amount ? 'bg-habi-error' : 'bg-habi-primary'
                                                 }`}
                                             style={{ width: `${Math.min(((item.spent || 0) / item.amount) * 100, 100)}%` }}
                                         ></div>
                                     </div>
 
                                     <div className="flex justify-between items-center pt-1.5 sm:pt-2">
-                                        <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${(item.spent || 0) > item.amount ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'
+                                        <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${(item.spent || 0) > item.amount ? 'bg-habi-error/10 text-habi-error' : 'bg-habi-success/10 text-habi-success'
                                             }`}>
                                             {(item.spent || 0) > item.amount ? 'Over Limit' : 'On Track'}
                                         </span>

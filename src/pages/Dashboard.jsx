@@ -4,7 +4,7 @@ import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell, Respon
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
-const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316'];
+const COLORS = ['#243763', '#2E5E42', '#CFA85B', '#A65341', '#8DBFC5', '#3E7F63', '#D39B22', '#B9473D'];
 
 function Dashboard({ selectedMonth }) {
     const [summary, setSummary] = useState({ totalBudget: 0, totalCurrent: 0, totalRemaining: 0 });
@@ -103,7 +103,7 @@ function Dashboard({ selectedMonth }) {
             return (
                 <div className="bg-slate-900 border border-slate-700 p-3 rounded-lg shadow-xl outline-none">
                     <p className="text-white font-bold text-sm tracking-wide">{payload[0].name}</p>
-                    <p className="text-blue-400 font-black mt-1">
+                    <p className="text-[#CFA85B] font-black mt-1">
                         ${payload[0].value.toFixed(2)}
                         <span className="text-slate-400 text-xs font-normal ml-2">
                             ({((payload[0].value / summary.totalCurrent) * 100).toFixed(1)}%)
@@ -122,11 +122,11 @@ function Dashboard({ selectedMonth }) {
                 <div className="bg-slate-900 border border-slate-700 p-3 rounded-lg shadow-xl outline-none">
                     <p className="text-white font-bold text-sm tracking-wide flex justify-between items-center gap-4">
                         {data.name}
-                        {data.isOverspent && <span className="text-[10px] bg-rose-500 text-white px-1.5 py-0.5 rounded font-black uppercase">Overboard</span>}
+                        {data.isOverspent && <span className="text-[10px] bg-habi-error text-white px-1.5 py-0.5 rounded font-black uppercase">Overboard</span>}
                     </p>
                     {data.isOverspent ? (
                         <div className="mt-1">
-                            <p className="text-rose-400 font-black">
+                            <p className="text-habi-error font-black">
                                 Overspent by ${Math.abs(data.actualLeft).toLocaleString()}
                             </p>
                             <p className="text-slate-500 text-[10px] mt-0.5">
@@ -135,7 +135,7 @@ function Dashboard({ selectedMonth }) {
                         </div>
                     ) : (
                         <div className="mt-1">
-                            <p className="text-emerald-400 font-black">
+                            <p className="text-[#3E7F63] font-black">
                                 {data.percentLeft.toFixed(1)}% Remaining
                             </p>
                             <p className="text-slate-400 text-xs mt-1">
@@ -163,10 +163,10 @@ function Dashboard({ selectedMonth }) {
             </header>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
-                <div className="enterprise-card p-5 sm:p-6 lg:p-8 border-l-4 border-l-emerald-500 hover:shadow-md transition-shadow">
+                <div className="enterprise-card p-5 sm:p-6 lg:p-8 border-l-4 border-l-habi-success hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start">
                         <h3 className="text-[var(--text-secondary)] text-[10px] sm:text-xs font-bold uppercase tracking-widest">Available Budget</h3>
-                        <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-500">
+                        <div className="p-2 bg-habi-success/10 rounded-lg text-habi-success">
                             <Wallet size={18} />
                         </div>
                     </div>
@@ -175,25 +175,25 @@ function Dashboard({ selectedMonth }) {
                     </div>
                 </div>
 
-                <div className="enterprise-card p-5 sm:p-6 lg:p-8 border-l-4 border-l-rose-500 hover:shadow-md transition-shadow">
+                <div className="enterprise-card p-5 sm:p-6 lg:p-8 border-l-4 border-l-habi-error hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start">
                         <h3 className="text-[var(--text-secondary)] text-[10px] sm:text-xs font-bold uppercase tracking-widest">Total Expenses</h3>
-                        <div className="p-2 bg-rose-500/10 rounded-lg text-rose-500">
+                        <div className="p-2 bg-habi-error/10 rounded-lg text-habi-error">
                             <TrendingUp size={18} />
                         </div>
                     </div>
                     <div className="flex items-baseline space-x-2 mt-3 sm:mt-4">
-                        <span className={`text-2xl sm:text-3xl lg:text-4xl font-black ${summary.totalCurrent > summary.totalBudget ? "text-rose-600" : "text-[var(--text-primary)]"}`}>
+                        <span className={`text-2xl sm:text-3xl lg:text-4xl font-black ${summary.totalCurrent > summary.totalBudget ? "text-habi-error" : "text-[var(--text-primary)]"}`}>
                             ${summary.totalCurrent.toLocaleString()}
                         </span>
                     </div>
                 </div>
 
-                <div className="enterprise-card p-5 sm:p-6 lg:p-8 border-l-4 border-l-blue-500 hover:shadow-md transition-shadow flex sm:col-span-2 lg:col-span-1">
+                <div className="enterprise-card p-5 sm:p-6 lg:p-8 border-l-4 border-l-habi-primary hover:shadow-md transition-shadow flex sm:col-span-2 lg:col-span-1">
                     <div className="w-full">
                         <div className="flex justify-between items-start">
                             <h3 className="text-[var(--text-secondary)] text-[10px] sm:text-xs font-bold uppercase tracking-widest">Remaining Balance</h3>
-                            <div className="p-2 bg-blue-500/10 rounded-lg text-blue-500">
+                            <div className="p-2 bg-habi-primary/10 rounded-lg text-habi-primary">
                                 <TrendingDown size={18} />
                             </div>
                         </div>
@@ -207,7 +207,7 @@ function Dashboard({ selectedMonth }) {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                 <section className="enterprise-card overflow-hidden">
                     <div className="p-6 border-b border-[var(--border-color)] flex items-center space-x-3">
-                        <div className="p-2 bg-blue-500/10 rounded-lg text-blue-500">
+                        <div className="p-2 bg-habi-primary/10 rounded-lg text-habi-primary">
                             <PieChartIcon size={18} />
                         </div>
                         <h3 className="text-lg font-bold text-[var(--text-primary)] tracking-tight">Spending by Category</h3>
@@ -249,7 +249,7 @@ function Dashboard({ selectedMonth }) {
 
                 <section className="enterprise-card overflow-hidden">
                     <div className="p-6 border-b border-[var(--border-color)] flex items-center space-x-3">
-                        <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-500">
+                        <div className="p-2 bg-habi-success/10 rounded-lg text-habi-success">
                             <BarChart3 size={18} />
                         </div>
                         <h3 className="text-lg font-bold text-[var(--text-primary)] tracking-tight">Budget Progress (% Left)</h3>
@@ -278,7 +278,7 @@ function Dashboard({ selectedMonth }) {
                                                     y={y}
                                                     dy={4}
                                                     textAnchor="end"
-                                                    fill={data?.isOverspent ? '#f43f5e' : '#94a3b8'}
+                                                    fill={data?.isOverspent ? '#B9473D' : '#A7A7A7'}
                                                     fontSize={12}
                                                     fontWeight={data?.isOverspent ? 800 : 600}
                                                 >
@@ -289,11 +289,11 @@ function Dashboard({ selectedMonth }) {
                                         width={100}
                                     />
                                     <Tooltip content={<CustomBarTooltip />} cursor={{ fill: 'rgba(51, 65, 85, 0.3)' }} />
-                                    <Bar dataKey="displayValue" radius={[0, 4, 4, 0]} barSize={20} background={{ fill: '#1e293b', radius: [0, 4, 4, 0] }}>
+                                    <Bar dataKey="displayValue" radius={[0, 4, 4, 0]} barSize={20} background={{ fill: '#1A2332', radius: [0, 4, 4, 0] }}>
                                         {chartData.budgetItems.map((entry, index) => (
                                             <Cell
                                                 key={`cell-${index}`}
-                                                fill={entry.isOverspent ? '#e11d48' : (entry.percentLeft < 40 ? '#f59e0b' : '#10b981')}
+                                                fill={entry.isOverspent ? '#B9473D' : (entry.percentLeft < 40 ? '#D39B22' : '#3E7F63')}
                                             />
                                         ))}
                                     </Bar>
@@ -311,7 +311,7 @@ function Dashboard({ selectedMonth }) {
             <section className="enterprise-card">
                 <div className="bg-[var(--bg-primary)] p-6 border-b border-[var(--border-color)] flex justify-between items-center">
                     <h3 className="text-lg font-bold text-[var(--text-primary)]">Recent Activity</h3>
-                    <button className="text-sm font-semibold text-blue-500 hover:text-blue-600 transition-colors">View All</button>
+                    <button className="text-sm font-semibold text-[var(--accent-gold)] hover:brightness-110 transition-colors">View All</button>
                 </div>
                 <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
@@ -329,12 +329,12 @@ function Dashboard({ selectedMonth }) {
                                     <td className="p-6 text-sm text-[var(--text-secondary)]">{t.date}</td>
                                     <td className="p-6 text-sm font-semibold text-[var(--text-primary)]">{t.description}</td>
                                     <td className="p-6">
-                                        <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-bold">
+                                        <span className="px-3 py-1 bg-habi-primary/10 text-habi-primary rounded-full text-xs font-bold">
                                             {t.budgetItem ? t.budgetItem.name : (t.category ? t.category.name : '-')}
                                         </span>
                                     </td>
                                     <td className="p-6 text-right">
-                                        <span className="text-sm font-black text-rose-500">-${t.amount?.toFixed(2)}</span>
+                                        <span className="text-sm font-black text-habi-error">-${t.amount?.toFixed(2)}</span>
                                     </td>
                                 </tr>
                             ))}
@@ -350,12 +350,12 @@ function Dashboard({ selectedMonth }) {
                                 <span className="text-sm font-bold text-[var(--text-primary)] line-clamp-1">{t.description}</span>
                                 <div className="flex items-center space-x-2">
                                     <span className="text-[10px] text-[var(--text-secondary)] font-medium">{t.date}</span>
-                                    <span className="text-[10px] px-2 py-0.5 bg-blue-500/10 text-blue-500 rounded-full font-bold uppercase">
+                                    <span className="text-[10px] px-2 py-0.5 bg-habi-primary/10 text-habi-primary rounded-full font-bold uppercase">
                                         {t.budgetItem ? t.budgetItem.name : (t.category ? t.category.name : '-')}
                                     </span>
                                 </div>
                             </div>
-                            <span className="text-sm font-black text-rose-500 shrink-0">-${t.amount?.toFixed(2)}</span>
+                            <span className="text-sm font-black text-habi-error shrink-0">-${t.amount?.toFixed(2)}</span>
                         </div>
                     ))}
                 </div>
