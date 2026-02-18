@@ -64,13 +64,13 @@ function Categories() {
         <div className="space-y-6 lg:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 className="text-2xl lg:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">Categories</h2>
+                    <h2 className="text-2xl lg:text-3xl font-heading font-extrabold text-[var(--text-primary)] tracking-tight">Categories</h2>
                     <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium">Manage your spending classifications for better tracking.</p>
                 </div>
             </header>
 
             <section className="enterprise-card p-6 lg:p-8 bg-[var(--bg-secondary)]">
-                <h3 className="text-lg font-bold text-[var(--text-primary)] mb-6">
+                <h3 className="text-lg font-heading font-bold text-[var(--text-primary)] mb-6">
                     {editingId ? "Modify Classification" : "New Category"}
                 </h3>
                 <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -108,8 +108,8 @@ function Categories() {
             </section>
 
             <section className="enterprise-card bg-[var(--bg-secondary)]">
-                <div className="bg-[var(--bg-primary)] p-6 border-b border-[var(--border-color)]">
-                    <h3 className="text-lg font-bold text-[var(--text-primary)]">Product Classifications</h3>
+                <div className="bg-[var(--bg-card-header)] p-6 border-b border-[var(--border-color)]">
+                    <h3 className="text-lg font-heading font-bold text-[var(--text-primary)]">Product Classifications</h3>
                 </div>
                 <div className="hidden sm:block overflow-x-auto">
                     <table className="w-full text-left">
@@ -124,7 +124,7 @@ function Categories() {
                                 <tr key={cat.id} className="hover:bg-[var(--bg-primary)] transition-colors group">
                                     <td className="p-6 text-sm font-bold text-[var(--text-primary)]">
                                         {cat.name}
-                                        {cat.isSystem && <span className="ml-2 text-[10px] bg-[var(--bg-primary)] text-[var(--text-secondary)] px-1.5 py-0.5 rounded font-black tracking-widest uppercase">System</span>}
+                                        {cat.isSystem && <span className="ml-2 text-[10px] bg-[var(--bg-primary)] text-[var(--text-secondary)] px-1.5 py-0.5 rounded-sm font-black tracking-widest uppercase">System</span>}
                                     </td>
                                     <td className="p-6 text-right space-x-6">
                                         {!cat.isSystem && (
@@ -156,7 +156,7 @@ function Categories() {
                         <div key={cat.id} className="p-4 flex justify-between items-center hover:bg-[var(--bg-primary)] transition-colors">
                             <span className="text-sm font-bold text-[var(--text-primary)]">
                                 {cat.name}
-                                {cat.isSystem && <span className="ml-2 text-[9px] bg-[var(--bg-primary)] text-[var(--text-secondary)] px-1 py-0.5 rounded font-black uppercase tracking-tighter">System</span>}
+                                {cat.isSystem && <span className="ml-2 text-[9px] bg-[var(--bg-primary)] text-[var(--text-secondary)] px-1 py-0.5 rounded-sm font-black uppercase tracking-tighter">System</span>}
                             </span>
                             {!cat.isSystem && (
                                 <div className="flex space-x-4">

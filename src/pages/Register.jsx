@@ -40,17 +40,17 @@ export default function Register() {
 
             <div className="w-full max-w-md z-10">
                 <div className="text-center mb-10">
-                    <div className="inline-flex items-center justify-center p-3 bg-white rounded-3xl shadow-xl shadow-habi-primary/10 mb-6 overflow-hidden w-24 h-24 mx-auto animate-in zoom-in-50 duration-500">
+                    <div className="inline-flex items-center justify-center p-3 bg-white rounded-sm shadow-xl shadow-habi-primary/10 mb-6 overflow-hidden w-24 h-24 mx-auto animate-in zoom-in-50 duration-500">
                         <img src="/logo.svg" alt="habi logo" className="w-full h-full object-cover" />
                     </div>
-                    <h1 className="text-5xl font-black text-[var(--text-primary)] tracking-tighter lowercase">
+                    <h1 className="text-5xl font-heading font-black text-[var(--text-primary)] tracking-tighter lowercase">
                         habi
                     </h1>
                 </div>
 
                 <div className="enterprise-card p-8 lg:p-10 bg-[var(--bg-secondary)]/80 backdrop-blur-xl border border-[var(--border-color)]">
                     {error && (
-                        <div className="mb-6 p-4 bg-habi-error/10 border border-habi-error/20 rounded-xl flex items-center gap-3 text-habi-error text-sm font-medium animate-in slide-in-from-top-2">
+                        <div className="mb-6 p-4 bg-habi-error/10 border border-habi-error/20 rounded-sm flex items-center gap-3 text-habi-error text-sm font-medium animate-in slide-in-from-top-2">
                             <AlertCircle size={18} />
                             {error}
                         </div>

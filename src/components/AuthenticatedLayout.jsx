@@ -59,29 +59,29 @@ export default function AuthenticatedLayout({ children, selectedDate, setSelecte
                     <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4">
                         <button
                             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                            className="lg:hidden p-2 rounded-lg bg-[var(--bg-primary)] text-[var(--text-secondary)] hover:text-habi-primary transition-colors border border-[var(--border-color)]"
+                            className="lg:hidden p-2 rounded-sm bg-[var(--bg-primary)] text-[var(--text-secondary)] hover:text-habi-primary transition-colors border border-[var(--border-color)]"
                         >
                             <Menu size={18} />
                         </button>
-                        <h2 className="text-lg lg:text-xl font-bold text-[var(--text-primary)] hidden sm:block">Overview</h2>
+                        <h2 className="text-lg lg:text-xl font-heading font-bold text-[var(--text-primary)] hidden sm:block">Overview</h2>
                         <MonthSelector selectedDate={selectedDate} onDateChange={setSelectedDate} />
                     </div>
 
                     <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4">
                         <button
                             onClick={() => setIsDarkMode(!isDarkMode)}
-                            className="p-2 rounded-lg bg-[var(--bg-primary)] text-[var(--text-secondary)] hover:text-habi-gold transition-colors border border-[var(--border-color)]"
+                            className="p-2 rounded-sm bg-[var(--bg-primary)] text-[var(--text-secondary)] hover:text-habi-gold transition-colors border border-[var(--border-color)]"
                         >
                             {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
                         </button>
                         <button
                             onClick={logout}
                             title="Sign Out"
-                            className="p-2 rounded-lg bg-[var(--bg-primary)] text-[var(--text-secondary)] hover:text-habi-error transition-colors border border-[var(--border-color)]"
+                            className="p-2 rounded-sm bg-[var(--bg-primary)] text-[var(--text-secondary)] hover:text-habi-error transition-colors border border-[var(--border-color)]"
                         >
                             <LogOut size={18} />
                         </button>
-                        <div className="h-8 w-8 rounded-full bg-habi-primary flex items-center justify-center text-white font-bold text-xs shadow-lg shrink-0">
+                        <div className="h-8 w-8 rounded-sm bg-habi-primary flex items-center justify-center text-white font-bold text-xs shadow-lg shrink-0">
                             {userInitials}
                         </div>
                     </div>

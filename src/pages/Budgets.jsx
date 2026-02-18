@@ -114,7 +114,7 @@ function Budgets({ selectedMonth }) {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 className="text-2xl lg:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">
+                    <h2 className="text-2xl lg:text-3xl font-heading font-extrabold text-[var(--text-primary)] tracking-tight">
                         Budgets
                     </h2>
                     <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium italic">Track and manage your spending limits.</p>
@@ -124,10 +124,10 @@ function Budgets({ selectedMonth }) {
             {!budget ? (
                 <div className="enterprise-card p-6 sm:p-8 lg:p-16 text-center space-y-6 lg:space-y-8 bg-gradient-to-br from-[var(--bg-secondary)] to-[var(--bg-primary)]">
                     <div className="space-y-3 sm:space-y-4">
-                        <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-habi-primary/10 rounded-full flex items-center justify-center text-habi-primary shadow-inner">
+                        <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-habi-primary/10 rounded-sm flex items-center justify-center text-habi-primary shadow-inner">
                             <Wallet size={28} />
                         </div>
-                        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-[var(--text-primary)]">Start your budget month</h3>
+                        <h3 className="text-lg sm:text-xl lg:text-2xl font-heading font-bold text-[var(--text-primary)]">Start your budget month</h3>
                         <p className="text-[var(--text-secondary)] max-w-sm sm:max-w-md mx-auto text-xs sm:text-sm lg:text-lg">
                             Take control of your finances for {selectedMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}.
                         </p>
@@ -151,7 +151,7 @@ function Budgets({ selectedMonth }) {
             ) : (
                 <>
                     <section className="enterprise-card p-5 sm:p-6 lg:p-8 bg-[var(--bg-secondary)] mb-8 sm:mb-10">
-                        <h3 className="text-base sm:text-lg font-bold text-[var(--text-primary)] mb-4 sm:mb-6">Add New Budget Item</h3>
+                        <h3 className="text-base sm:text-lg font-heading font-bold text-[var(--text-primary)] mb-4 sm:mb-6">Add New Budget Item</h3>
                         <form onSubmit={handleAddItem} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                             <div className="space-y-1.5 sm:space-y-2">
                                 <label className="text-[10px] sm:text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider">Item Name</label>
@@ -196,26 +196,26 @@ function Budgets({ selectedMonth }) {
                                                 onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                                             />
                                         ) : (
-                                            <h3 className="font-bold text-lg sm:text-xl text-[var(--text-primary)] truncate">{item.name}</h3>
+                                            <h3 className="font-heading font-bold text-lg sm:text-xl text-[var(--text-primary)] truncate">{item.name}</h3>
                                         )}
                                         <span className="text-[var(--text-secondary)] text-[10px] font-medium uppercase tracking-widest mt-0.5 block">Expense Limit</span>
                                     </div>
                                     <div className="flex space-x-0.5 sm:space-x-1">
                                         {editingId === item.id ? (
                                             <>
-                                                <button onClick={() => handleUpdateItem(item.id)} className="p-2 text-habi-success hover:bg-habi-success/10 rounded-lg transition-colors">
+                                                <button onClick={() => handleUpdateItem(item.id)} className="p-2 text-habi-success hover:bg-habi-success/10 rounded-sm transition-colors">
                                                     <Check size={18} />
                                                 </button>
-                                                <button onClick={cancelEditing} className="p-2 text-habi-error hover:bg-habi-error/10 rounded-lg transition-colors">
+                                                <button onClick={cancelEditing} className="p-2 text-habi-error hover:bg-habi-error/10 rounded-sm transition-colors">
                                                     <X size={18} />
                                                 </button>
                                             </>
                                         ) : (
                                             <>
-                                                <button onClick={() => startEditing(item)} className="p-2 text-[var(--text-secondary)] hover:text-habi-primary hover:bg-habi-primary/10 rounded-lg transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100">
+                                                <button onClick={() => startEditing(item)} className="p-2 text-[var(--text-secondary)] hover:text-habi-primary hover:bg-habi-primary/10 rounded-sm transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100">
                                                     <Edit2 size={16} />
                                                 </button>
-                                                <button onClick={() => deleteItem(item.id)} className="p-2 text-[var(--text-secondary)] hover:text-habi-error hover:bg-habi-error/10 rounded-lg transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100">
+                                                <button onClick={() => deleteItem(item.id)} className="p-2 text-[var(--text-secondary)] hover:text-habi-error hover:bg-habi-error/10 rounded-sm transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100">
                                                     <Receipt size={16} />
                                                 </button>
                                             </>
@@ -241,16 +241,16 @@ function Budgets({ selectedMonth }) {
                                         </div>
                                     </div>
 
-                                    <div className="w-full bg-[var(--bg-primary)] rounded-full h-2.5 sm:h-3 overflow-hidden shadow-inner border border-[var(--border-color)]">
+                                    <div className="w-full bg-[var(--bg-primary)] rounded-sm h-2.5 sm:h-3 overflow-hidden shadow-inner border border-[var(--border-color)]">
                                         <div
-                                            className={`h-full rounded-full transition-all duration-500 ${(item.spent || 0) > item.amount ? 'bg-habi-error' : 'bg-habi-primary'
+                                            className={`h-full rounded-sm transition-all duration-500 ${(item.spent || 0) > item.amount ? 'bg-habi-error' : 'bg-habi-primary'
                                                 }`}
                                             style={{ width: `${Math.min(((item.spent || 0) / item.amount) * 100, 100)}%` }}
                                         ></div>
                                     </div>
 
                                     <div className="flex justify-between items-center pt-1.5 sm:pt-2">
-                                        <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${(item.spent || 0) > item.amount ? 'bg-habi-error/10 text-habi-error' : 'bg-habi-success/10 text-habi-success'
+                                        <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-sm ${(item.spent || 0) > item.amount ? 'bg-habi-error/10 text-habi-error' : 'bg-habi-success/10 text-habi-success'
                                             }`}>
                                             {(item.spent || 0) > item.amount ? 'Over Limit' : 'On Track'}
                                         </span>

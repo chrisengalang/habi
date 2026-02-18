@@ -169,7 +169,7 @@ function Transactions({ selectedMonth }) {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 className="text-2xl lg:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">
+                    <h2 className="text-2xl lg:text-3xl font-heading font-extrabold text-[var(--text-primary)] tracking-tight">
                         Transactions
                     </h2>
                     <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium">Detailed history of all your recorded financial activities.</p>
@@ -178,7 +178,7 @@ function Transactions({ selectedMonth }) {
 
             <section className="enterprise-card p-6 lg:p-8 bg-[var(--bg-secondary)] border-l-4 border-l-habi-primary">
                 <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                    <h3 className="text-lg font-heading font-bold text-[var(--text-primary)]">
                         {editingId ? "Update Transaction" : "Record Transaction"}
                     </h3>
                     {editingId && (
@@ -246,14 +246,14 @@ function Transactions({ selectedMonth }) {
             </section>
 
             <section className="enterprise-card bg-[var(--bg-secondary)] overflow-hidden">
-                <div className="p-4 sm:p-6 border-b border-[var(--border-color)] bg-[var(--bg-primary)] flex flex-wrap gap-4 sm:gap-6 items-center">
+                <div className="p-4 sm:p-6 border-b border-[var(--border-color)] bg-[var(--bg-card-header)] flex flex-wrap gap-4 sm:gap-6 items-center">
                     <div className="relative flex-1 min-w-full sm:min-w-[300px]">
                         <input
                             type="text"
                             placeholder="Filter by description..."
                             value={filterText}
                             onChange={e => setFilterText(e.target.value)}
-                            className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-full px-10 sm:px-12 py-2 sm:py-2.5 text-base focus:ring-2 focus:ring-[var(--accent-color)] outline-none"
+                            className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-sm px-10 sm:px-12 py-2 sm:py-2.5 text-base focus:ring-2 focus:ring-[var(--accent-color)] outline-none"
                         />
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]">
                             <Search size={16} />
@@ -263,7 +263,7 @@ function Transactions({ selectedMonth }) {
                         <select
                             value={filterCategory}
                             onChange={e => setFilterCategory(e.target.value)}
-                            className="flex-1 sm:flex-none bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg px-3 sm:px-4 py-2 text-xs sm:text-sm text-[var(--text-primary)] outline-none"
+                            className="flex-1 sm:flex-none bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-sm px-3 sm:px-4 py-2 text-xs sm:text-sm text-[var(--text-primary)] outline-none"
                         >
                             <option value="">All Categories</option>
                             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -271,7 +271,7 @@ function Transactions({ selectedMonth }) {
                         <select
                             value={filterBudgetItem}
                             onChange={e => setFilterBudgetItem(e.target.value)}
-                            className="flex-1 sm:flex-none bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg px-3 sm:px-4 py-2 text-xs sm:text-sm text-[var(--text-primary)] outline-none"
+                            className="flex-1 sm:flex-none bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-sm px-3 sm:px-4 py-2 text-xs sm:text-sm text-[var(--text-primary)] outline-none"
                         >
                             <option value="">All Items</option>
                             {budgetItems.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
@@ -311,12 +311,12 @@ function Transactions({ selectedMonth }) {
                                     <td className="p-6 text-sm text-[var(--text-secondary)] font-medium">{t.date}</td>
                                     <td className="p-6 text-sm font-bold text-[var(--text-primary)]">{t.description}</td>
                                     <td className="p-6">
-                                        <span className="px-3 py-1 bg-[var(--text-light)]/10 text-[var(--text-secondary)] rounded-full text-xs font-black uppercase tracking-tighter">
+                                        <span className="px-3 py-1 bg-[var(--text-light)]/10 text-[var(--text-secondary)] rounded-sm text-xs font-black uppercase tracking-tighter">
                                             {t.budgetItemName || t.budgetItem?.name || '-'}
                                         </span>
                                     </td>
                                     <td className="p-6">
-                                        <span className="px-3 py-1 bg-habi-primary/10 text-habi-primary rounded-full text-xs font-black uppercase tracking-tighter">
+                                        <span className="px-3 py-1 bg-habi-primary/10 text-habi-primary rounded-sm text-xs font-black uppercase tracking-tighter">
                                             {t.categoryName || t.category?.name || '-'}
                                         </span>
                                     </td>
@@ -326,14 +326,14 @@ function Transactions({ selectedMonth }) {
                                     <td className="p-6 text-right space-x-2">
                                         <button
                                             onClick={() => handleEdit(t)}
-                                            className="p-2 text-[var(--text-secondary)] hover:text-habi-primary hover:bg-habi-primary/10 rounded-lg transition-colors"
+                                            className="p-2 text-[var(--text-secondary)] hover:text-habi-primary hover:bg-habi-primary/10 rounded-sm transition-colors"
                                             title="Edit Transaction"
                                         >
                                             <Edit2 size={16} />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(t.id)}
-                                            className="p-2 text-[var(--text-secondary)] hover:text-habi-error hover:bg-habi-error/10 rounded-lg transition-colors"
+                                            className="p-2 text-[var(--text-secondary)] hover:text-habi-error hover:bg-habi-error/10 rounded-sm transition-colors"
                                             title="Delete Transaction"
                                         >
                                             <Trash2 size={16} />
@@ -352,7 +352,7 @@ function Transactions({ selectedMonth }) {
                             <div className="flex flex-col space-y-1.5 flex-1 pr-4">
                                 <div className="flex items-center space-x-2">
                                     <span className="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">{t.date}</span>
-                                    <span className={`text-[9px] px-1.5 py-0.5 rounded font-black uppercase border ${t.budgetItem || t.budgetItemName ? "border-[var(--text-light)]/20 text-[var(--text-secondary)] bg-[var(--bg-primary)]" : "border-habi-primary/20 text-habi-primary bg-habi-primary/5"}`}>
+                                    <span className={`text-[9px] px-1.5 py-0.5 rounded-sm font-black uppercase border ${t.budgetItem || t.budgetItemName ? "border-[var(--text-light)]/20 text-[var(--text-secondary)] bg-[var(--bg-primary)]" : "border-habi-primary/20 text-habi-primary bg-habi-primary/5"}`}>
                                         {t.budgetItemName || t.budgetItem?.name || t.categoryName || t.category?.name || 'General'}
                                     </span>
                                 </div>
@@ -364,13 +364,13 @@ function Transactions({ selectedMonth }) {
                                 </div>
                                 <button
                                     onClick={() => handleEdit(t)}
-                                    className="p-2 text-[var(--text-secondary)] hover:text-habi-primary bg-[var(--bg-primary)] rounded-lg transition-colors border border-[var(--border-color)]"
+                                    className="p-2 text-[var(--text-secondary)] hover:text-habi-primary bg-[var(--bg-primary)] rounded-sm transition-colors border border-[var(--border-color)]"
                                 >
                                     <Edit2 size={16} />
                                 </button>
                                 <button
                                     onClick={() => handleDelete(t.id)}
-                                    className="p-2 text-[var(--text-secondary)] hover:text-habi-error bg-[var(--bg-primary)] rounded-lg transition-colors border border-[var(--border-color)]"
+                                    className="p-2 text-[var(--text-secondary)] hover:text-habi-error bg-[var(--bg-primary)] rounded-sm transition-colors border border-[var(--border-color)]"
                                 >
                                     <Trash2 size={16} />
                                 </button>

@@ -41,9 +41,9 @@ const Sidebar = ({ isOpen, toggleSidebar, onItemClick }) => {
             <div className={`flex items-center border-b border-white/10 transition-all duration-300 ${isOpen ? 'justify-between p-6' : 'justify-center py-6 px-0'}`}>
                 {isOpen && (
                     <div className="animate-in fade-in duration-300 flex items-center gap-3">
-                        <img src="/logo.svg" alt="habi logo" className="w-9 h-9 rounded-lg" />
+                        <img src="/logo.svg" alt="habi logo" className="w-9 h-9 rounded-sm" />
                         <div>
-                            <h1 className="font-bold text-2xl text-[var(--accent-gold)] whitespace-nowrap lowercase">
+                            <h1 className="font-heading font-extrabold text-2xl text-[var(--accent-gold)] whitespace-nowrap lowercase">
                                 habi
                             </h1>
                             <span className="text-[10px] font-semibold text-white/40 lowercase tracking-widest">
@@ -54,7 +54,7 @@ const Sidebar = ({ isOpen, toggleSidebar, onItemClick }) => {
                 )}
                 <button
                     onClick={toggleSidebar}
-                    className={`p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-white/60 hidden lg:block ${!isOpen ? 'mx-auto' : ''}`}
+                    className={`p-1.5 rounded-sm bg-white/10 hover:bg-white/20 transition-colors text-white/60 hidden lg:block ${!isOpen ? 'mx-auto' : ''}`}
                 >
                     {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
                 </button>
@@ -71,7 +71,7 @@ const Sidebar = ({ isOpen, toggleSidebar, onItemClick }) => {
                             key={item.path}
                             to={item.path}
                             onClick={onItemClick}
-                            className={`flex items-center transition-all group relative ${isOpen ? 'p-3 rounded-xl' : 'p-3 justify-center rounded-2xl'
+                            className={`flex items-center transition-all group relative ${isOpen ? 'p-3 rounded-sm' : 'p-3 justify-center rounded-sm'
                                 } ${isActive
                                     ? 'bg-[var(--accent-gold)] text-habi-primary shadow-lg shadow-[var(--accent-gold)]/30'
                                     : 'hover:bg-white/10 text-white/60 hover:text-white'
@@ -83,7 +83,7 @@ const Sidebar = ({ isOpen, toggleSidebar, onItemClick }) => {
                                 {item.label}
                             </span>
                             {!isOpen && (
-                                <div className="hidden lg:group-hover:block absolute left-20 bg-habi-primary text-white px-2 py-1 rounded text-xs transition-opacity pointer-events-none shadow-xl border border-white/10 whitespace-nowrap z-[60]">
+                                <div className="hidden lg:group-hover:block absolute left-20 bg-habi-primary text-white px-2 py-1 rounded-sm text-xs transition-opacity pointer-events-none shadow-xl border border-white/10 whitespace-nowrap z-[60]">
                                     {item.label}
                                 </div>
                             )}
@@ -101,7 +101,7 @@ const Sidebar = ({ isOpen, toggleSidebar, onItemClick }) => {
                 )}
                 <button
                     onClick={handleLogout}
-                    className={`flex items-center w-full transition-all group ${isOpen ? 'p-3 rounded-xl' : 'p-3 justify-center rounded-2xl'} hover:bg-[var(--color-error)]/10 text-white/60 hover:text-[var(--color-error)]`}
+                    className={`flex items-center w-full transition-all group ${isOpen ? 'p-3 rounded-sm' : 'p-3 justify-center rounded-sm'} hover:bg-[var(--color-error)]/10 text-white/60 hover:text-[var(--color-error)]`}
                 >
                     <LogOut size={24} className="shrink-0" />
                     <span className={`ml-4 font-medium transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden hidden'}`}>

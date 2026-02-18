@@ -86,7 +86,7 @@ function ChecklistImport() {
                     </button>
                     <div className="flex items-start justify-between gap-4">
                         <div>
-                            <h1 className="text-2xl lg:text-3xl font-extrabold text-[var(--text-primary)] tracking-tighter lowercase flex items-center gap-3">
+                            <h1 className="text-2xl lg:text-3xl font-heading font-extrabold text-[var(--text-primary)] tracking-tighter lowercase flex items-center gap-3">
                                 <Download size={28} className="text-habi-primary shrink-0" />
                                 shared checklist
                             </h1>
@@ -96,14 +96,14 @@ function ChecklistImport() {
                                     : "you can tick and untick items. only the owner can delete."}
                             </p>
                         </div>
-                        <span className="inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 bg-habi-success/10 text-habi-success rounded-full shrink-0 mt-1">
+                        <span className="inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 bg-habi-success/10 text-habi-success rounded-sm shrink-0 mt-1">
                             <span className="w-1.5 h-1.5 bg-habi-success rounded-full animate-pulse" />
                             live
                         </span>
                     </div>
 
                     {/* Permission badge */}
-                    <div className={`inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full mt-2 ${isOwner ? 'bg-habi-primary/10 text-habi-primary' : 'bg-habi-warning/10 text-habi-warning'}`}>
+                    <div className={`inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-sm mt-2 ${isOwner ? 'bg-habi-primary/10 text-habi-primary' : 'bg-habi-warning/10 text-habi-warning'}`}>
                         {isOwner ? '✦ owner — full access' : '👁 viewer — tick/untick only'}
                     </div>
                 </header>
@@ -119,10 +119,10 @@ function ChecklistImport() {
                     <div className="space-y-6">
                         {Object.entries(groupedItems).map(([group, groupItems]) => (
                             <div key={group} className="enterprise-card bg-[var(--bg-secondary)] overflow-hidden">
-                                <div className="p-4 border-b border-[var(--border-color)] bg-habi-primary/5 flex items-center gap-2">
+                                <div className="p-4 border-b border-[var(--border-color)] bg-[var(--bg-card-header)] flex items-center gap-2">
                                     <FolderOpen size={14} className="text-habi-primary" />
                                     <h3 className="font-bold text-sm tracking-widest uppercase text-habi-primary">{group}</h3>
-                                    <span className="ml-auto text-[10px] font-bold px-2 py-0.5 bg-habi-primary/10 text-habi-primary rounded-full">
+                                    <span className="ml-auto text-[10px] font-bold px-2 py-0.5 bg-habi-primary/10 text-habi-primary rounded-sm">
                                         {groupItems.length} items
                                     </span>
                                 </div>
@@ -142,7 +142,7 @@ function ChecklistImport() {
                                             {isOwner && (
                                                 <button
                                                     onClick={() => handleDelete(item.id)}
-                                                    className="opacity-0 group-hover:opacity-100 p-1.5 text-[var(--text-light)] hover:text-habi-error hover:bg-habi-error/10 rounded-md transition-all text-xs lowercase"
+                                                    className="opacity-0 group-hover:opacity-100 p-1.5 text-[var(--text-light)] hover:text-habi-error hover:bg-habi-error/10 rounded-sm transition-all text-xs lowercase"
                                                 >
                                                     delete
                                                 </button>

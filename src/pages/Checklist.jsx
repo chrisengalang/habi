@@ -41,19 +41,19 @@ function SortableCard({ group, groupItems, inlineItemNames, setInlineItemNames, 
     return (
         <div ref={setNodeRef} style={style} className="enterprise-card flex flex-col bg-[var(--bg-secondary)] border border-[var(--border-color)] hover:border-habi-gold/40 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-habi-gold/5 h-fit select-none">
             {/* Card Header */}
-            <div className="p-4 border-b border-[var(--border-color)] flex items-center justify-between bg-habi-primary/5">
+            <div className="p-4 border-b border-[var(--border-color)] flex items-center justify-between bg-[var(--bg-card-header)]">
                 <h3 className="font-bold text-sm tracking-widest uppercase text-habi-primary flex items-center gap-2 truncate">
                     <FolderOpen size={14} className="shrink-0" />
                     {group}
                 </h3>
                 <div className="flex items-center gap-1 shrink-0 ml-2">
-                    <span className="text-[10px] font-bold px-2 py-0.5 bg-habi-primary/10 text-habi-primary rounded-full">
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-habi-primary/10 text-habi-primary rounded-sm">
                         {groupItems.length}
                     </span>
                     {/* Per-card Share */}
                     <button
                         onClick={() => handleShareGroup(group, groupItems)}
-                        className="p-1.5 text-[var(--text-light)] hover:text-habi-primary hover:bg-habi-primary/10 rounded-md transition-colors"
+                        className="p-1.5 text-[var(--text-light)] hover:text-habi-primary hover:bg-habi-primary/10 rounded-sm transition-colors"
                         title={`share "${group}" list`}
                     >
                         <Share2 size={14} />
@@ -61,7 +61,7 @@ function SortableCard({ group, groupItems, inlineItemNames, setInlineItemNames, 
                     {/* Delete Card — owner only */}
                     <button
                         onClick={() => handleDeleteGroup(group, groupItems)}
-                        className="p-1.5 text-[var(--text-light)] hover:text-habi-error hover:bg-habi-error/10 rounded-md transition-colors"
+                        className="p-1.5 text-[var(--text-light)] hover:text-habi-error hover:bg-habi-error/10 rounded-sm transition-colors"
                         title={`delete "${group}" list`}
                     >
                         <Trash2 size={14} />
@@ -70,7 +70,7 @@ function SortableCard({ group, groupItems, inlineItemNames, setInlineItemNames, 
                     <button
                         {...attributes}
                         {...listeners}
-                        className="p-1.5 text-[var(--text-light)] hover:text-habi-primary cursor-grab active:cursor-grabbing rounded-md transition-colors touch-none"
+                        className="p-1.5 text-[var(--text-light)] hover:text-habi-primary cursor-grab active:cursor-grabbing rounded-sm transition-colors touch-none"
                         title="drag to reorder"
                     >
                         <GripVertical size={14} />
@@ -82,7 +82,7 @@ function SortableCard({ group, groupItems, inlineItemNames, setInlineItemNames, 
             <div className="flex-1 p-2 min-h-[50px]">
                 <div className="space-y-1">
                     {groupItems.map(item => (
-                        <div key={item.id} className={`flex items-center gap-3 p-2 rounded-lg hover:bg-[var(--bg-primary)] transition-colors group ${item.completed ? 'opacity-40' : ''}`}>
+                        <div key={item.id} className={`flex items-center gap-3 p-2 rounded-sm hover:bg-[var(--bg-primary)] transition-colors group ${item.completed ? 'opacity-40' : ''}`}>
                             <button
                                 onClick={() => handleToggleComplete(item)}
                                 className={`shrink-0 transition-colors ${item.completed ? 'text-habi-success' : 'text-[var(--text-light)] hover:text-habi-primary'}`}
@@ -117,7 +117,7 @@ function SortableCard({ group, groupItems, inlineItemNames, setInlineItemNames, 
                             {!item.completed && (
                                 <button
                                     onClick={() => handleDelete(item.id)}
-                                    className="opacity-0 group-hover:opacity-100 p-1 text-[var(--text-light)] hover:text-habi-error hover:bg-habi-error/10 rounded-md transition-all"
+                                    className="opacity-0 group-hover:opacity-100 p-1 text-[var(--text-light)] hover:text-habi-error hover:bg-habi-error/10 rounded-sm transition-all"
                                 >
                                     <Trash2 size={14} />
                                 </button>
@@ -313,12 +313,12 @@ function Checklist({ selectedMonth }) {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
             <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-2xl lg:text-3xl font-extrabold text-[var(--text-primary)] tracking-tighter lowercase">
-                        monthly checklist
+                    <h2 className="text-2xl lg:text-3xl font-heading font-extrabold text-[var(--text-primary)] tracking-tighter">
+                        Checklist
                     </h2>
-                    <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium lowercase flex items-center gap-2">
-                        organize your lists like sticky notes.
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 bg-habi-success/10 text-habi-success rounded-full">
+                    <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium flex items-center gap-2">
+                        Organize your lists like sticky notes.
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 bg-habi-success/10 text-habi-success rounded-sm">
                             <span className="w-1.5 h-1.5 bg-habi-success rounded-full animate-pulse" />
                             live
                         </span>
@@ -328,8 +328,8 @@ function Checklist({ selectedMonth }) {
             </header>
 
             {/* Create New List */}
-            <section className="flex justify-center">
-                <div className="w-full max-w-xl enterprise-card p-4 bg-[var(--bg-secondary)] border-2 border-habi-primary/20">
+            <section>
+                <div className="w-full enterprise-card p-4 bg-[var(--bg-secondary)] border-2 border-habi-primary/20">
                     <form onSubmit={handleCreateList} className="flex gap-3">
                         <div className="flex-1 relative">
                             <Plus className="absolute left-3 top-1/2 -translate-y-1/2 text-habi-primary" size={18} />
@@ -351,7 +351,7 @@ function Checklist({ selectedMonth }) {
                 {loading ? (
                     <div className="p-20 text-center text-[var(--text-secondary)] italic lowercase animate-pulse">loading your notes...</div>
                 ) : orderedGroups.length === 0 ? (
-                    <div className="enterprise-card p-16 text-center bg-[var(--bg-secondary)] border-dashed border-2 border-[var(--border-color)] max-w-2xl mx-auto mt-8">
+                    <div className="enterprise-card p-16 text-center bg-[var(--bg-secondary)] border-dashed border-2 border-[var(--border-color)] mt-8">
                         <StickyNote className="mx-auto text-[var(--text-light)] mb-6" size={64} />
                         <p className="text-[var(--text-secondary)] font-bold text-xl lowercase">no lists yet.</p>
                         <p className="text-[var(--text-secondary)] opacity-60 text-sm mt-2 lowercase">type a name above to start a new sticky note list.</p>
@@ -380,7 +380,7 @@ function Checklist({ selectedMonth }) {
                         <DragOverlay>
                             {activeId ? (
                                 <div className="enterprise-card bg-[var(--bg-secondary)] border-2 border-habi-primary/60 shadow-2xl shadow-habi-primary/20 opacity-95 rotate-1 scale-105">
-                                    <div className="p-4 border-b border-[var(--border-color)] flex items-center justify-between bg-habi-primary/10">
+                                    <div className="p-4 border-b border-[var(--border-color)] flex items-center justify-between bg-[var(--bg-card-header)]">
                                         <h3 className="font-bold text-sm tracking-widest uppercase text-habi-primary flex items-center gap-2">
                                             <FolderOpen size={14} />
                                             {activeId}

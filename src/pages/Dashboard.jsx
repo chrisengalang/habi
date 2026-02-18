@@ -101,7 +101,7 @@ function Dashboard({ selectedMonth }) {
     const CustomPieTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
             return (
-                <div className="bg-slate-900 border border-slate-700 p-3 rounded-lg shadow-xl outline-none">
+                <div className="bg-slate-900 border border-slate-700 p-3 rounded-sm shadow-xl outline-none">
                     <p className="text-white font-bold text-sm tracking-wide">{payload[0].name}</p>
                     <p className="text-[#CFA85B] font-black mt-1">
                         ${payload[0].value.toFixed(2)}
@@ -119,10 +119,10 @@ function Dashboard({ selectedMonth }) {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
             return (
-                <div className="bg-slate-900 border border-slate-700 p-3 rounded-lg shadow-xl outline-none">
+                <div className="bg-slate-900 border border-slate-700 p-3 rounded-sm shadow-xl outline-none">
                     <p className="text-white font-bold text-sm tracking-wide flex justify-between items-center gap-4">
                         {data.name}
-                        {data.isOverspent && <span className="text-[10px] bg-habi-error text-white px-1.5 py-0.5 rounded font-black uppercase">Overboard</span>}
+                        {data.isOverspent && <span className="text-[10px] bg-habi-error text-white px-1.5 py-0.5 rounded-sm font-black uppercase">Overboard</span>}
                     </p>
                     {data.isOverspent ? (
                         <div className="mt-1">
@@ -154,10 +154,10 @@ function Dashboard({ selectedMonth }) {
     return (
         <div className="space-y-6 lg:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h2 className="text-2xl lg:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">
+                <h2 className="text-2xl lg:text-3xl font-heading font-extrabold text-[var(--text-primary)] tracking-tight">
                     Dashboard
                 </h2>
-                <span className="text-sm lg:text-base text-[var(--text-secondary)] font-medium bg-[var(--bg-secondary)] px-4 py-1.5 rounded-full border border-[var(--border-color)] shadow-sm">
+                <span className="text-sm lg:text-base text-[var(--text-secondary)] font-medium bg-[var(--bg-secondary)] px-4 py-1.5 rounded-sm border border-[var(--border-color)] shadow-sm">
                     {selectedMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}
                 </span>
             </header>
@@ -166,7 +166,7 @@ function Dashboard({ selectedMonth }) {
                 <div className="enterprise-card p-5 sm:p-6 lg:p-8 border-l-4 border-l-habi-success hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start">
                         <h3 className="text-[var(--text-secondary)] text-[10px] sm:text-xs font-bold uppercase tracking-widest">Available Budget</h3>
-                        <div className="p-2 bg-habi-success/10 rounded-lg text-habi-success">
+                        <div className="p-2 bg-habi-success/10 rounded-sm text-habi-success">
                             <Wallet size={18} />
                         </div>
                     </div>
@@ -178,7 +178,7 @@ function Dashboard({ selectedMonth }) {
                 <div className="enterprise-card p-5 sm:p-6 lg:p-8 border-l-4 border-l-habi-error hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start">
                         <h3 className="text-[var(--text-secondary)] text-[10px] sm:text-xs font-bold uppercase tracking-widest">Total Expenses</h3>
-                        <div className="p-2 bg-habi-error/10 rounded-lg text-habi-error">
+                        <div className="p-2 bg-habi-error/10 rounded-sm text-habi-error">
                             <TrendingUp size={18} />
                         </div>
                     </div>
@@ -193,7 +193,7 @@ function Dashboard({ selectedMonth }) {
                     <div className="w-full">
                         <div className="flex justify-between items-start">
                             <h3 className="text-[var(--text-secondary)] text-[10px] sm:text-xs font-bold uppercase tracking-widest">Remaining Balance</h3>
-                            <div className="p-2 bg-habi-primary/10 rounded-lg text-habi-primary">
+                            <div className="p-2 bg-habi-primary/10 rounded-sm text-habi-primary">
                                 <TrendingDown size={18} />
                             </div>
                         </div>
@@ -206,11 +206,11 @@ function Dashboard({ selectedMonth }) {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                 <section className="enterprise-card overflow-hidden">
-                    <div className="p-6 border-b border-[var(--border-color)] flex items-center space-x-3">
-                        <div className="p-2 bg-habi-primary/10 rounded-lg text-habi-primary">
+                    <div className="p-6 border-b border-[var(--border-color)] bg-[var(--bg-card-header)] flex items-center space-x-3">
+                        <div className="p-2 bg-habi-primary/10 rounded-sm text-habi-primary">
                             <PieChartIcon size={18} />
                         </div>
-                        <h3 className="text-lg font-bold text-[var(--text-primary)] tracking-tight">Spending by Category</h3>
+                        <h3 className="text-lg font-heading font-bold text-[var(--text-primary)] tracking-tight">Spending by Category</h3>
                     </div>
                     <div className="h-[300px] sm:h-[350px] lg:h-[400px] p-4 sm:p-6">
                         {chartData.categories.length > 0 ? (
@@ -248,11 +248,11 @@ function Dashboard({ selectedMonth }) {
                 </section>
 
                 <section className="enterprise-card overflow-hidden">
-                    <div className="p-6 border-b border-[var(--border-color)] flex items-center space-x-3">
-                        <div className="p-2 bg-habi-success/10 rounded-lg text-habi-success">
+                    <div className="p-6 border-b border-[var(--border-color)] bg-[var(--bg-card-header)] flex items-center space-x-3">
+                        <div className="p-2 bg-habi-success/10 rounded-sm text-habi-success">
                             <BarChart3 size={18} />
                         </div>
-                        <h3 className="text-lg font-bold text-[var(--text-primary)] tracking-tight">Budget Progress (% Left)</h3>
+                        <h3 className="text-lg font-heading font-bold text-[var(--text-primary)] tracking-tight">Budget Progress (% Left)</h3>
                     </div>
                     <div className="h-[300px] sm:h-[350px] lg:h-[400px] p-4 sm:p-6">
                         {chartData.budgetItems.length > 0 ? (
@@ -289,7 +289,7 @@ function Dashboard({ selectedMonth }) {
                                         width={100}
                                     />
                                     <Tooltip content={<CustomBarTooltip />} cursor={{ fill: 'rgba(51, 65, 85, 0.3)' }} />
-                                    <Bar dataKey="displayValue" radius={[0, 4, 4, 0]} barSize={20} background={{ fill: '#1A2332', radius: [0, 4, 4, 0] }}>
+                                    <Bar dataKey="displayValue" radius={[0, 2, 2, 0]} barSize={20} background={{ fill: '#1A2332', radius: [0, 2, 2, 0] }}>
                                         {chartData.budgetItems.map((entry, index) => (
                                             <Cell
                                                 key={`cell-${index}`}
@@ -309,8 +309,8 @@ function Dashboard({ selectedMonth }) {
             </div>
 
             <section className="enterprise-card">
-                <div className="bg-[var(--bg-primary)] p-6 border-b border-[var(--border-color)] flex justify-between items-center">
-                    <h3 className="text-lg font-bold text-[var(--text-primary)]">Recent Activity</h3>
+                <div className="bg-[var(--bg-card-header)] p-6 border-b border-[var(--border-color)] flex justify-between items-center">
+                    <h3 className="text-lg font-heading font-bold text-[var(--text-primary)]">Recent Activity</h3>
                     <button className="text-sm font-semibold text-[var(--accent-gold)] hover:brightness-110 transition-colors">View All</button>
                 </div>
                 <div className="hidden md:block overflow-x-auto">
@@ -329,7 +329,7 @@ function Dashboard({ selectedMonth }) {
                                     <td className="p-6 text-sm text-[var(--text-secondary)]">{t.date}</td>
                                     <td className="p-6 text-sm font-semibold text-[var(--text-primary)]">{t.description}</td>
                                     <td className="p-6">
-                                        <span className="px-3 py-1 bg-habi-primary/10 text-habi-primary rounded-full text-xs font-bold">
+                                        <span className="px-3 py-1 bg-habi-primary/10 text-habi-primary rounded-sm text-xs font-bold">
                                             {t.budgetItem ? t.budgetItem.name : (t.category ? t.category.name : '-')}
                                         </span>
                                     </td>
@@ -350,7 +350,7 @@ function Dashboard({ selectedMonth }) {
                                 <span className="text-sm font-bold text-[var(--text-primary)] line-clamp-1">{t.description}</span>
                                 <div className="flex items-center space-x-2">
                                     <span className="text-[10px] text-[var(--text-secondary)] font-medium">{t.date}</span>
-                                    <span className="text-[10px] px-2 py-0.5 bg-habi-primary/10 text-habi-primary rounded-full font-bold uppercase">
+                                    <span className="text-[10px] px-2 py-0.5 bg-habi-primary/10 text-habi-primary rounded-sm font-bold uppercase">
                                         {t.budgetItem ? t.budgetItem.name : (t.category ? t.category.name : '-')}
                                     </span>
                                 </div>
