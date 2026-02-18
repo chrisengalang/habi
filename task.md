@@ -1,0 +1,27 @@
+# Budgeting Application Refactor
+
+- [ ] Project Initialization <!-- id: 0 -->
+    - [x] Analyze existing `pom.xml` and source code <!-- id: 1 -->
+    - [/] Clean up unrelated code (or archive it) <!-- id: 2 -->
+    - [ ] Initialize React frontend (e.g., in `frontend/`) <!-- id: 3 -->
+    - [ ] Update `pom.xml` for any new dependencies (Lombok, Spring Security, etc.) <!-- id: 4 -->
+- [x] Backend Implementation (Spring Boot) <!-- id: 5 -->
+    - [x] Define Domain Models (User, Budget, Transaction, Category) <!-- id: 6 -->
+    - [x] Create Repositories <!-- id: 7 -->
+    - [x] Create Services <!-- id: 8 -->
+    - [x] Create REST Controllers <!-- id: 9 -->
+    - [x] Configure Database (H2 or whatever is configured) <!-- id: 10 -->
+- [x] Frontend Implementation (React) <!-- id: 11 -->
+    - [x] Setup folder structure (components, services, context) <!-- id: 12 -->
+    - [x] Create API service for backend communication <!-- id: 13 -->
+    - [x] Implement Dashboard View <!-- id: 14 -->
+    - [x] Implement Budget Management <!-- id: 15 -->
+    - [x] Implement Transaction Logging <!-- id: 16 -->
+- [x] Integration & Verification <!-- id: 17 -->
+    - [x] Connect Frontend to Backend <!-- id: 18 -->
+    - [x] Verify End-to-End Flow <!-- id: 19 -->
+- [ ] Transaction & Budget Calculation <!-- id: 20 -->
+    - [ ] Update TransactionRepository with sum query <!-- id: 21 -->
+    - [ ] Update Budget logic to include calculated fields <!-- id: 22 -->
+    - [ ] Implement Transaction Creation Form (Frontend) <!-- id: 23 -->
+    - [ ] Update Budget Display (Frontend) <!-- id: 24 -->

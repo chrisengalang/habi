@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --sidebar-bg: #1e293b;
+    --sidebar-text: #f8fafc;
+    --accent-color: #2563eb;
+  }
+
+  .dark {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+    --sidebar-bg: #020617;
+    --sidebar-text: #f8fafc;
+    --accent-color: #3b82f6;
+  }
+
+  body {
+    @apply transition-colors duration-300;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+}
+
+@layer components {
+  .enterprise-card {
+    @apply bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl shadow-sm overflow-hidden transition-all duration-300;
+  }
+
+  .enterprise-input {
+    @apply w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg p-2.5 text-base focus:ring-2 focus:ring-blue-500 outline-none transition-all;
+  }
+
+  .enterprise-button-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg transition-all shadow-sm active:scale-95;
+  }
+
+  .enterprise-button-secondary {
+    @apply bg-transparent hover:bg-[var(--bg-primary)] text-[var(--text-primary)] border border-[var(--border-color)] font-semibold py-2.5 px-5 rounded-lg transition-all active:scale-95;
+  }
+}
