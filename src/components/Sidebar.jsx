@@ -40,9 +40,12 @@ const Sidebar = ({ isOpen, toggleSidebar, onItemClick }) => {
             {/* Logo Area */}
             <div className={`flex items-center border-b border-slate-700/50 transition-all duration-300 ${isOpen ? 'justify-between p-6' : 'justify-center py-6 px-0'}`}>
                 {isOpen && (
-                    <h1 className="font-bold text-2xl text-blue-400 animate-in fade-in duration-300 whitespace-nowrap lowercase">
-                        fintrack
-                    </h1>
+                    <div className="animate-in fade-in duration-300">
+                        <h1 className="font-bold text-2xl text-blue-400 whitespace-nowrap lowercase">
+                            habi
+                        </h1>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-0.5">Family Weaver</p>
+                    </div>
                 )}
                 <button
                     onClick={toggleSidebar}

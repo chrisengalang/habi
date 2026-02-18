@@ -78,7 +78,7 @@ function Checklist({ selectedMonth }) {
                 <h2 className="text-2xl lg:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">
                     Monthly Checklist
                 </h2>
-                <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium">Manage your shopping and grocery lists for this month.</p>
+                <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium">Mark off the knots in your family's monthly to-do tapestry.</p>
             </header>
 
             <section className="enterprise-card p-6 lg:p-8 bg-[var(--bg-secondary)] border-l-4 border-l-indigo-500">

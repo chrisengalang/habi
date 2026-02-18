@@ -65,7 +65,7 @@ function Categories() {
             <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h2 className="text-2xl lg:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">Categories</h2>
-                    <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium">Manage your spending classifications for better tracking.</p>
+                    <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium">Organize your spending by color and pattern - classify your financial threads.</p>
                 </div>
             </header>
 

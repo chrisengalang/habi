@@ -172,7 +172,7 @@ function Transactions({ selectedMonth }) {
                     <h2 className="text-2xl lg:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">
                         Transactions
                     </h2>
-                    <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium">Detailed history of all your recorded financial activities.</p>
+                    <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium">Every thread in your financial tapestry - track each expense detail.</p>
                 </div>
             </header>
 
