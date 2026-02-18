@@ -51,14 +51,50 @@ const api = {
     // Transactions
     getTransactions: async (userId, params) => {
         const { month, year } = params || {};
-        let q = query(collection(db, COLLECTION_TRANSACTIONS), where("userId", "==", userId));
 
+        // Get the budget the user has access to (owned or shared) for this month/year
+        // to find all budget item IDs they should see transactions for
+        let budgetItemIds = [];
         if (month && year) {
-            q = query(q, where("month", "==", parseInt(month)), where("year", "==", parseInt(year)));
+            const budget = await api.getBudgets(userId, { month, year });
+            if (budget && budget.budgetItems) {
+                budgetItemIds = budget.budgetItems.map(item => item.id);
+            }
         }
 
-        const snapshot = await getDocs(q);
-        const transactions = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        // Query 1: Transactions owned by user
+        let ownedQ = query(collection(db, COLLECTION_TRANSACTIONS), where("userId", "==", userId));
+        if (month && year) {
+            ownedQ = query(ownedQ, where("month", "==", parseInt(month)), where("year", "==", parseInt(year)));
+        }
+        const ownedSnap = await getDocs(ownedQ);
+
+        // Query 2: Transactions linked to shared budget items (if any)
+        let sharedTransactions = [];
+        if (budgetItemIds.length > 0) {
+            // Firestore 'in' queries are limited to 30 items, so batch if needed
+            const batches = [];
+            for (let i = 0; i < budgetItemIds.length; i += 30) {
+                batches.push(budgetItemIds.slice(i, i + 30));
+            }
+            for (const batch of batches) {
+                let sharedQ = query(
+                    collection(db, COLLECTION_TRANSACTIONS),
+                    where("budgetItem.id", "in", batch)
+                );
+                if (month && year) {
+                    sharedQ = query(sharedQ, where("month", "==", parseInt(month)), where("year", "==", parseInt(year)));
+                }
+                const sharedSnap = await getDocs(sharedQ);
+                sharedTransactions.push(...sharedSnap.docs.map(d => ({ id: d.id, ...d.data() })));
+            }
+        }
+
+        // Merge and deduplicate
+        const transactionMap = new Map();
+        ownedSnap.docs.forEach(d => transactionMap.set(d.id, { id: d.id, ...d.data() }));
+        sharedTransactions.forEach(t => transactionMap.set(t.id, t));
+        const transactions = Array.from(transactionMap.values());
 
         // Sort in memory: Primary by date (desc), Secondary by createdAt (desc)
         return transactions.sort((a, b) => {
@@ -70,12 +106,16 @@ const api = {
     },
 
     addTransaction: async (userId, data) => {
+        // Parse date string directly to avoid timezone issues
+        // data.date is in format "YYYY-MM-DD"
+        const [year, month] = data.date.split('-').map(Number);
+        
         const docData = {
             ...data,
             userId,
             amount: parseFloat(data.amount),
-            month: new Date(data.date).getMonth() + 1,
-            year: new Date(data.date).getFullYear(),
+            month,
+            year,
             createdAt: Timestamp.now()
         };
 
@@ -138,11 +178,13 @@ const api = {
         }
 
         // 2. Update the transaction document
+        // Parse date string directly to avoid timezone issues
+        const [updYear, updMonth] = data.date.split('-').map(Number);
         const updateData = {
             ...data,
             amount: newAmount,
-            month: new Date(data.date).getMonth() + 1,
-            year: new Date(data.date).getFullYear(),
+            month: updMonth,
+            year: updYear,
             updatedAt: Timestamp.now()
         };
         await updateDoc(docRef, updateData);
