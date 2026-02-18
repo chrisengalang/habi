@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Wallet, Receipt, Edit2, Check, X } from 'lucide-react';
+import { Wallet, Receipt, Edit2, Check, X, Users, UserPlus, Crown, Loader2 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
@@ -10,6 +10,15 @@ function Budgets({ selectedMonth }) {
     const [editForm, setEditForm] = useState({ name: '', amount: '' });
     const [loading, setLoading] = useState(false);
     const { user } = useAuth();
+
+    // Sharing state
+    const [showShareModal, setShowShareModal] = useState(false);
+    const [shareEmail, setShareEmail] = useState('');
+    const [shareLoading, setShareLoading] = useState(false);
+    const [shareError, setShareError] = useState('');
+    const [shareSuccess, setShareSuccess] = useState('');
+    const [sharedMembers, setSharedMembers] = useState([]);
+    const [membersLoading, setMembersLoading] = useState(false);
 
     useEffect(() => {
         if (selectedMonth && user) fetchBudget();
@@ -108,6 +117,63 @@ function Budgets({ selectedMonth }) {
         }
     };
 
+    // ── Sharing handlers ──────────────────────────────────────────────────
+    const isOwner = budget?.userId === user?.uid;
+
+    const fetchMembers = async (budgetId) => {
+        setMembersLoading(true);
+        try {
+            const members = await api.getSharedMembers(budgetId || budget.id);
+            setSharedMembers(members);
+        } catch (e) {
+            console.error("Failed to load members:", e);
+        } finally {
+            setMembersLoading(false);
+        }
+    };
+
+    const openShareModal = () => {
+        setShowShareModal(true);
+        setShareEmail('');
+        setShareError('');
+        setShareSuccess('');
+        if (budget) fetchMembers();
+    };
+
+    const handleShare = async (e) => {
+        e.preventDefault();
+        if (!shareEmail.trim() || !budget) return;
+        setShareLoading(true);
+        setShareError('');
+        setShareSuccess('');
+        try {
+            const result = await api.shareBudget(user.uid, budget.id, shareEmail.trim());
+            const msg = result.mergedCount > 0
+                ? `Shared with ${result.targetUser.email}. ${result.mergedCount} existing item(s) were merged into this budget.`
+                : `Shared with ${result.targetUser.email}.`;
+            setShareSuccess(msg);
+            setShareEmail('');
+            fetchMembers();
+            // Refresh budget to include any merged items
+            fetchBudget();
+        } catch (error) {
+            setShareError(error.message || "Failed to share budget.");
+        } finally {
+            setShareLoading(false);
+        }
+    };
+
+    const handleUnshare = async (targetUid) => {
+        if (!window.confirm("Remove this member from the shared budget?")) return;
+        try {
+            await api.unshareBudget(user.uid, budget.id, targetUid);
+            fetchMembers();
+            fetchBudget();
+        } catch (error) {
+            console.error("Failed to unshare:", error);
+        }
+    };
+
     if (loading) return <div className="p-10 text-center text-[var(--text-secondary)]">Loading your budget...</div>;
 
     return (
@@ -119,7 +185,117 @@ function Budgets({ selectedMonth }) {
                     </h2>
                     <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium italic">Track and manage your spending limits.</p>
                 </div>
+                {budget && (
+                    <div className="flex items-center gap-3">
+                        {(budget.sharedWith?.length > 0) && (
+                            <span className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 bg-habi-primary/10 text-habi-primary rounded-sm">
+                                <Users size={14} />
+                                Shared · {budget.sharedWith.length + 1}
+                            </span>
+                        )}
+                        {isOwner && (
+                            <button
+                                onClick={openShareModal}
+                                className="enterprise-button-secondary flex items-center gap-2 py-2 px-4 text-sm"
+                            >
+                                <UserPlus size={16} />
+                                Share
+                            </button>
+                        )}
+                    </div>
+                )}
             </header>
+
+            {/* ── Share Modal ────────────────────────────────────────────── */}
+            {showShareModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="enterprise-card bg-[var(--bg-secondary)] w-full max-w-md shadow-2xl">
+                        {/* Modal Header */}
+                        <div className="bg-[var(--bg-card-header)] p-5 border-b border-[var(--border-color)] flex items-center justify-between">
+                            <h3 className="font-heading font-bold text-lg text-[var(--text-primary)] flex items-center gap-2">
+                                <Users size={18} />
+                                Share Budget
+                            </h3>
+                            <button onClick={() => setShowShareModal(false)} className="p-1.5 hover:bg-[var(--bg-primary)] rounded-sm transition-colors text-[var(--text-secondary)]">
+                                <X size={18} />
+                            </button>
+                        </div>
+
+                        {/* Add Member */}
+                        <div className="p-5 border-b border-[var(--border-color)]">
+                            <form onSubmit={handleShare} className="flex gap-2">
+                                <input
+                                    type="email"
+                                    placeholder="Enter email address..."
+                                    value={shareEmail}
+                                    onChange={e => setShareEmail(e.target.value)}
+                                    className="enterprise-input flex-1"
+                                    required
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={shareLoading}
+                                    className="enterprise-button-primary px-4 flex items-center gap-2 whitespace-nowrap"
+                                >
+                                    {shareLoading ? <Loader2 size={16} className="animate-spin" /> : <UserPlus size={16} />}
+                                    Share
+                                </button>
+                            </form>
+                            {shareError && (
+                                <p className="mt-3 text-sm text-habi-error bg-habi-error/10 p-3 rounded-sm font-medium">{shareError}</p>
+                            )}
+                            {shareSuccess && (
+                                <p className="mt-3 text-sm text-habi-success bg-habi-success/10 p-3 rounded-sm font-medium">{shareSuccess}</p>
+                            )}
+                        </div>
+
+                        {/* Members List */}
+                        <div className="p-5">
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)] mb-3">Members</h4>
+                            {membersLoading ? (
+                                <div className="text-center py-6 text-[var(--text-secondary)]">
+                                    <Loader2 size={20} className="animate-spin mx-auto" />
+                                </div>
+                            ) : (
+                                <div className="space-y-2">
+                                    {sharedMembers.map((member) => (
+                                        <div key={member.uid} className="flex items-center justify-between p-3 bg-[var(--bg-primary)] rounded-sm">
+                                            <div className="flex items-center gap-3 min-w-0">
+                                                <div className="w-8 h-8 bg-habi-primary/10 rounded-sm flex items-center justify-center text-habi-primary font-bold text-sm shrink-0">
+                                                    {(member.displayName || member.email)[0].toUpperCase()}
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-semibold text-[var(--text-primary)] truncate">
+                                                        {member.displayName || member.email.split('@')[0]}
+                                                        {member.isOwner && (
+                                                            <Crown size={12} className="inline ml-1.5 text-habi-gold" />
+                                                        )}
+                                                    </p>
+                                                    <p className="text-xs text-[var(--text-secondary)] truncate">{member.email}</p>
+                                                </div>
+                                            </div>
+                                            {!member.isOwner && isOwner && (
+                                                <button
+                                                    onClick={() => handleUnshare(member.uid)}
+                                                    className="p-1.5 text-[var(--text-secondary)] hover:text-habi-error hover:bg-habi-error/10 rounded-sm transition-colors shrink-0"
+                                                    title="Remove member"
+                                                >
+                                                    <X size={16} />
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                    {sharedMembers.length === 0 && (
+                                        <p className="text-sm text-[var(--text-secondary)] text-center py-4 italic">
+                                            Only you have access to this budget. Share it with family members above.
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {!budget ? (
                 <div className="enterprise-card p-6 sm:p-8 lg:p-16 text-center space-y-6 lg:space-y-8 bg-gradient-to-br from-[var(--bg-secondary)] to-[var(--bg-primary)]">

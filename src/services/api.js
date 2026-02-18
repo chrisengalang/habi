@@ -13,7 +13,9 @@ import {
     Timestamp,
     setDoc,
     increment,
-    onSnapshot
+    onSnapshot,
+    arrayUnion,
+    arrayRemove
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -23,8 +25,29 @@ const COLLECTION_CATEGORIES = "categories";
 const COLLECTION_BUDGET_ITEMS = "budgetItems";
 const COLLECTION_CHECKLIST_ITEMS = "checklistItems";
 const COLLECTION_CHECKLIST_SHARES = "checklistShares";
+const COLLECTION_USERS = "users";
 
 const api = {
+    // User Profiles
+    saveUserProfile: async (uid, email, displayName) => {
+        await setDoc(doc(db, COLLECTION_USERS, uid), {
+            uid,
+            email: email.toLowerCase(),
+            displayName: displayName || email.split('@')[0],
+            updatedAt: Timestamp.now()
+        }, { merge: true });
+    },
+
+    getUserByEmail: async (email) => {
+        const q = query(
+            collection(db, COLLECTION_USERS),
+            where("email", "==", email.toLowerCase())
+        );
+        const snap = await getDocs(q);
+        if (snap.empty) return null;
+        return { id: snap.docs[0].id, ...snap.docs[0].data() };
+    },
+
     // Transactions
     getTransactions: async (userId, params) => {
         const { month, year } = params || {};
@@ -154,19 +177,31 @@ const api = {
     // Budgets
     getBudgets: async (userId, params) => {
         const { month, year } = params || {};
-        let q = query(collection(db, COLLECTION_BUDGETS), where("userId", "==", userId));
 
+        // Query 1: budgets owned by user
+        let ownedQ = query(collection(db, COLLECTION_BUDGETS), where("userId", "==", userId));
         if (month && year) {
-            q = query(q, where("month", "==", parseInt(month)), where("year", "==", parseInt(year)));
+            ownedQ = query(ownedQ, where("month", "==", parseInt(month)), where("year", "==", parseInt(year)));
         }
 
-        const snapshot = await getDocs(q);
-        const budgets = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        // Query 2: budgets shared with user
+        let sharedQ = query(collection(db, COLLECTION_BUDGETS), where("sharedWith", "array-contains", userId));
+        if (month && year) {
+            sharedQ = query(sharedQ, where("month", "==", parseInt(month)), where("year", "==", parseInt(year)));
+        }
 
+        const [ownedSnap, sharedSnap] = await Promise.all([getDocs(ownedQ), getDocs(sharedQ)]);
+
+        // Merge and deduplicate
+        const budgetMap = new Map();
+        ownedSnap.docs.forEach(d => budgetMap.set(d.id, { id: d.id, ...d.data() }));
+        sharedSnap.docs.forEach(d => budgetMap.set(d.id, { id: d.id, ...d.data() }));
+        const budgets = Array.from(budgetMap.values());
+
+        // Fetch items for each budget by budgetId only (all members' items)
         for (let budget of budgets) {
             const itemsQ = query(collection(db, COLLECTION_BUDGET_ITEMS),
-                where("budgetId", "==", budget.id),
-                where("userId", "==", userId)
+                where("budgetId", "==", budget.id)
             );
             const itemsSnap = await getDocs(itemsQ);
             budget.budgetItems = itemsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -179,30 +214,73 @@ const api = {
         const docRef = await addDoc(collection(db, COLLECTION_BUDGETS), {
             ...data,
             userId,
+            sharedWith: [],
             createdAt: Timestamp.now()
         });
-        return { id: docRef.id, ...data, userId, budgetItems: [] };
+        return { id: docRef.id, ...data, userId, sharedWith: [], budgetItems: [] };
+    },
+
+    copyPreviousBudget: async (userId, data) => {
+        const { month, year } = data;
+        let prevMonth = month - 1;
+        let prevYear = year;
+        if (prevMonth === 0) { prevMonth = 12; prevYear = year - 1; }
+
+        const prevBudget = await api.getBudgets(userId, { month: prevMonth, year: prevYear });
+        if (!prevBudget || !prevBudget.budgetItems || prevBudget.budgetItems.length === 0) {
+            throw { response: { data: { message: "Could not find a budget from the previous month to copy from." } } };
+        }
+
+        const newBudget = await api.createBudget(userId, { month, year });
+
+        for (const item of prevBudget.budgetItems) {
+            await api.addBudgetItem(userId, { name: item.name, amount: item.amount, budgetId: newBudget.id });
+        }
+
+        return await api.getBudgets(userId, { month, year });
     },
 
     // Budget Items
     addBudgetItem: async (userId, data) => {
+        const budgetId = data.budget?.id || data.budgetId;
+        // Verify user has access to this budget
+        if (budgetId) {
+            const budgetSnap = await getDoc(doc(db, COLLECTION_BUDGETS, budgetId));
+            if (budgetSnap.exists()) {
+                const bd = budgetSnap.data();
+                if (bd.userId !== userId && !(bd.sharedWith || []).includes(userId)) {
+                    throw new Error("Unauthorized");
+                }
+            }
+        }
         const docData = {
             ...data,
             userId,
             amount: parseFloat(data.amount),
             spent: 0,
-            budgetId: data.budget?.id || data.budgetId
+            budgetId
         };
         delete docData.budget;
         const docRef = await addDoc(collection(db, COLLECTION_BUDGET_ITEMS), docData);
         return { id: docRef.id, ...docData };
     },
 
+    // Helper: check if userId has access to the budget that owns a given item
+    _checkBudgetAccess: async (userId, itemData) => {
+        if (itemData.userId === userId) return true;
+        if (!itemData.budgetId) return false;
+        const budgetSnap = await getDoc(doc(db, COLLECTION_BUDGETS, itemData.budgetId));
+        if (!budgetSnap.exists()) return false;
+        const bd = budgetSnap.data();
+        return bd.userId === userId || (bd.sharedWith || []).includes(userId);
+    },
+
     updateBudgetItem: async (userId, id, data) => {
         const docRef = doc(db, COLLECTION_BUDGET_ITEMS, id);
-        // Security check: verify ownership before update (client-side)
         const snap = await getDoc(docRef);
-        if (snap.exists() && snap.data().userId !== userId) throw new Error("Unauthorized");
+        if (!snap.exists()) throw new Error("Budget item not found");
+        const hasAccess = await api._checkBudgetAccess(userId, snap.data());
+        if (!hasAccess) throw new Error("Unauthorized");
 
         const updateData = { ...data };
         if (updateData.amount) updateData.amount = parseFloat(updateData.amount);
@@ -213,8 +291,106 @@ const api = {
     deleteBudgetItem: async (userId, id) => {
         const docRef = doc(db, COLLECTION_BUDGET_ITEMS, id);
         const snap = await getDoc(docRef);
-        if (snap.exists() && snap.data().userId !== userId) throw new Error("Unauthorized");
+        if (!snap.exists()) return;
+        const hasAccess = await api._checkBudgetAccess(userId, snap.data());
+        if (!hasAccess) throw new Error("Unauthorized");
         await deleteDoc(docRef);
+    },
+
+    // Budget Sharing
+    shareBudget: async (userId, budgetId, email) => {
+        const targetUser = await api.getUserByEmail(email);
+        if (!targetUser) throw new Error("No user found with that email address.");
+        if (targetUser.uid === userId) throw new Error("You can't share a budget with yourself.");
+
+        const budgetRef = doc(db, COLLECTION_BUDGETS, budgetId);
+        const budgetSnap = await getDoc(budgetRef);
+        if (!budgetSnap.exists()) throw new Error("Budget not found.");
+        const budgetData = budgetSnap.data();
+        if (budgetData.userId !== userId) throw new Error("Only the budget owner can share.");
+        if ((budgetData.sharedWith || []).includes(targetUser.uid)) {
+            throw new Error("Budget is already shared with this user.");
+        }
+
+        // Reconciliation: if target user has their own budget for same month/year,
+        // move their items into this shared budget and delete their old budget.
+        const existingQ = query(
+            collection(db, COLLECTION_BUDGETS),
+            where("userId", "==", targetUser.uid),
+            where("month", "==", budgetData.month),
+            where("year", "==", budgetData.year)
+        );
+        const existingSnap = await getDocs(existingQ);
+        let mergedCount = 0;
+
+        for (const existingDoc of existingSnap.docs) {
+            const itemsQ = query(
+                collection(db, COLLECTION_BUDGET_ITEMS),
+                where("budgetId", "==", existingDoc.id)
+            );
+            const itemsSnap = await getDocs(itemsQ);
+
+            // Move each item to the shared budget (keeps same doc ID so transaction refs stay valid)
+            for (const itemDoc of itemsSnap.docs) {
+                await updateDoc(doc(db, COLLECTION_BUDGET_ITEMS, itemDoc.id), {
+                    budgetId: budgetId
+                });
+                mergedCount++;
+            }
+
+            // Delete the now-empty old budget
+            await deleteDoc(doc(db, COLLECTION_BUDGETS, existingDoc.id));
+        }
+
+        // Add target user to sharedWith
+        await updateDoc(budgetRef, {
+            sharedWith: arrayUnion(targetUser.uid)
+        });
+
+        return {
+            success: true,
+            mergedCount,
+            targetUser: { uid: targetUser.uid, email: targetUser.email, displayName: targetUser.displayName }
+        };
+    },
+
+    unshareBudget: async (userId, budgetId, targetUid) => {
+        const budgetRef = doc(db, COLLECTION_BUDGETS, budgetId);
+        const budgetSnap = await getDoc(budgetRef);
+        if (!budgetSnap.exists()) throw new Error("Budget not found.");
+        const budgetData = budgetSnap.data();
+        if (budgetData.userId !== userId) throw new Error("Only the budget owner can manage sharing.");
+
+        await updateDoc(budgetRef, {
+            sharedWith: arrayRemove(targetUid)
+        });
+    },
+
+    getSharedMembers: async (budgetId) => {
+        const budgetRef = doc(db, COLLECTION_BUDGETS, budgetId);
+        const budgetSnap = await getDoc(budgetRef);
+        if (!budgetSnap.exists()) return [];
+
+        const budgetData = budgetSnap.data();
+        const sharedWith = budgetData.sharedWith || [];
+
+        const members = [];
+
+        // Owner
+        const ownerDoc = await getDoc(doc(db, COLLECTION_USERS, budgetData.userId));
+        if (ownerDoc.exists()) {
+            members.push({ ...ownerDoc.data(), isOwner: true });
+        }
+
+        // Shared members
+        for (const uid of sharedWith) {
+            const userDoc = await getDoc(doc(db, COLLECTION_USERS, uid));
+            if (userDoc.exists()) {
+                members.push({ ...userDoc.data(), isOwner: false });
+            }
+        }
+
+        return members;
     },
 
     // Categories
@@ -376,6 +552,7 @@ const api = {
 
         if (path === '/transactions') return { data: await api.addTransaction(userId, data) };
         if (path === '/budgets') return { data: await api.createBudget(userId, data) };
+        if (path === '/budgets/copy-previous') return { data: await api.copyPreviousBudget(userId, data) };
         if (path === '/budget-items') return { data: await api.addBudgetItem(userId, data) };
         if (path === '/categories') return { data: await api.saveCategory(userId, data) };
         if (path === '/checklist-items') return { data: await api.addChecklistItem(userId, data) };
