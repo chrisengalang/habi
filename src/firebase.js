@@ -4,13 +4,13 @@ import { getAuth } from "firebase/auth";
 
 // Habi Firebase Configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCWv-iX8z-Qa5QG7xtKq2MHx8u7h37lDm8",
-    authDomain: "habi-7a543.firebaseapp.com",
-    projectId: "habi-7a543",
-    storageBucket: "habi-7a543.firebasestorage.app",
-    messagingSenderId: "857628018613",
-    appId: "1:857628018613:web:f61d1bd336490500c63bfc",
-    measurementId: "G-W5FH1L6TCB"
+    apiKey: "AIzaSyBsb_pmjOABBu-HXk9Cx6V88r-xmQ0sthw",
+    authDomain: "habi-chrisen.firebaseapp.com",
+    projectId: "habi-chrisen",
+    storageBucket: "habi-chrisen.firebasestorage.app",
+    messagingSenderId: "867428199823",
+    appId: "1:867428199823:web:364ceb3a328737c4bdaffa",
+    measurementId: "G-D8LC8S4Z29"
 };
 
 const app = initializeApp(firebaseConfig);
