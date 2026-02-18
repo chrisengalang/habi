@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background -->
+  <rect width="100" height="100" rx="16" fill="#EDE8DD"/>
+
+  <!-- Layer 1: Full horizontal bars -->
+  <rect x="5" y="14" width="90" height="18" rx="3" fill="#1E3F6E"/>
+  <rect x="5" y="41" width="90" height="18" rx="3" fill="#E5A71E"/>
+  <rect x="5" y="68" width="90" height="18" rx="3" fill="#2D7A46"/>
+
+  <!-- Layer 2: Full vertical bars -->
+  <rect x="14" y="5" width="18" height="90" rx="3" fill="#C1432E"/>
+  <rect x="41" y="5" width="18" height="90" rx="3" fill="#E5A71E"/>
+  <rect x="68" y="5" width="18" height="90" rx="3" fill="#1E3F6E"/>
+
+  <!-- Layer 3: Horizontal-on-top crossing segments (weave effect) -->
+  <rect x="14" y="14" width="18" height="18" fill="#1E3F6E"/>
+  <rect x="68" y="14" width="18" height="18" fill="#1E3F6E"/>
+  <rect x="41" y="41" width="18" height="18" fill="#E5A71E"/>
+  <rect x="14" y="68" width="18" height="18" fill="#2D7A46"/>
+  <rect x="68" y="68" width="18" height="18" fill="#2D7A46"/>
+</svg>

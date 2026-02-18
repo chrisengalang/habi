@@ -12,7 +12,8 @@ import {
     limit,
     Timestamp,
     setDoc,
-    increment
+    increment,
+    onSnapshot
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -21,6 +22,7 @@ const COLLECTION_BUDGETS = "budgets";
 const COLLECTION_CATEGORIES = "categories";
 const COLLECTION_BUDGET_ITEMS = "budgetItems";
 const COLLECTION_CHECKLIST_ITEMS = "checklistItems";
+const COLLECTION_CHECKLIST_SHARES = "checklistShares";
 
 const api = {
     // Transactions
@@ -274,6 +276,23 @@ const api = {
         return items.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
     },
 
+    // Real-time listener for checklist items — returns unsubscribe fn
+    subscribeToChecklistItems: (userId, { month, year }, callback) => {
+        let q = query(
+            collection(db, COLLECTION_CHECKLIST_ITEMS),
+            where("userId", "==", userId)
+        );
+        if (month && year) {
+            q = query(q, where("month", "==", parseInt(month)), where("year", "==", parseInt(year)));
+        }
+        return onSnapshot(q, (snap) => {
+            const items = snap.docs
+                .map(d => ({ id: d.id, ...d.data() }))
+                .sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
+            callback(items);
+        });
+    },
+
     addChecklistItem: async (userId, data) => {
         const docRef = await addDoc(collection(db, COLLECTION_CHECKLIST_ITEMS), {
             ...data,
@@ -296,6 +315,45 @@ const api = {
         await deleteDoc(docRef);
     },
 
+    // Creates a share record pointing to the live items (by owner + group + month/year)
+    createChecklistShare: async (userId, { group, month, year }) => {
+        const res = await addDoc(collection(db, COLLECTION_CHECKLIST_SHARES), {
+            createdBy: userId,
+            group,      // null means "all groups"
+            month,
+            year,
+            createdAt: Timestamp.now()
+        });
+        return { id: res.id };
+    },
+
+    getChecklistShare: async (id) => {
+        const docRef = doc(db, COLLECTION_CHECKLIST_SHARES, id);
+        const snap = await getDoc(docRef);
+        if (!snap.exists()) throw new Error("Share not found");
+        return { id: snap.id, ...snap.data() };
+    },
+
+    // Real-time listener for a shared group — viewers can toggle but not delete
+    subscribeToSharedItems: (shareData, callback) => {
+        const { createdBy, group, month, year } = shareData;
+        let q = query(
+            collection(db, COLLECTION_CHECKLIST_ITEMS),
+            where("userId", "==", createdBy),
+            where("month", "==", parseInt(month)),
+            where("year", "==", parseInt(year))
+        );
+        if (group) {
+            q = query(q, where("group", "==", group));
+        }
+        return onSnapshot(q, (snap) => {
+            const items = snap.docs
+                .map(d => ({ id: d.id, ...d.data() }))
+                .sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
+            callback(items);
+        });
+    },
+
     // Bridge for existing code - requires userId in config or data
     get: async (path, config) => {
         const userId = config?.userId;
@@ -305,6 +363,10 @@ const api = {
         if (path.startsWith('/transactions')) return { data: await api.getTransactions(userId, config?.params) };
         if (path === '/categories') return { data: await api.getCategories(userId) };
         if (path === '/checklist-items') return { data: await api.getChecklistItems(userId, config?.params) };
+        if (path.startsWith('/checklist-shares/')) {
+            const id = path.split('/').pop();
+            return { data: await api.getChecklistShare(id) };
+        }
         throw new Error(`GET path not implemented: ${path}`);
     },
 
@@ -317,6 +379,7 @@ const api = {
         if (path === '/budget-items') return { data: await api.addBudgetItem(userId, data) };
         if (path === '/categories') return { data: await api.saveCategory(userId, data) };
         if (path === '/checklist-items') return { data: await api.addChecklistItem(userId, data) };
+        if (path === '/checklist-shares') return { data: await api.createChecklistShare(userId, data) };
         throw new Error(`POST path not implemented: ${path}`);
     },
 

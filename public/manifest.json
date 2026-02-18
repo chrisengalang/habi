@@ -1,7 +1,7 @@
 {
-    "name": "Habi - Family Budget Weaver",
-    "short_name": "Habi",
-    "description": "Weaving your family's expenses and budgeting together.",
+    "name": "fintrack personal finance",
+    "short_name": "fintrack",
+    "description": "Premium personal finance tracking and budgeting.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#0f172a",

@@ -35,12 +35,11 @@ export default function Login() {
             <div className="w-full max-w-md z-10">
                 <div className="text-center mb-10">
                     <div className="inline-flex items-center justify-center p-3 bg-white rounded-3xl shadow-xl shadow-blue-500/10 mb-6 overflow-hidden w-24 h-24 mx-auto animate-in zoom-in-50 duration-500">
-                        <img src="/icon-192.png" alt="Habi logo" className="w-full h-full object-cover" />
+                        <img src="/logo.svg" alt="habi logo" className="w-full h-full object-cover" />
                     </div>
                     <h1 className="text-5xl font-black text-[var(--text-primary)] tracking-tighter lowercase">
-                        habi
+                        fintrack
                     </h1>
-                    <p className="text-sm text-[var(--text-secondary)] mt-2 font-medium">Weaving your family finances together</p>
                 </div>
 
                 <div className="enterprise-card p-8 lg:p-10 bg-[var(--bg-secondary)]/80 backdrop-blur-xl border border-[var(--border-color)]">

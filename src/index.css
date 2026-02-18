@@ -48,4 +48,16 @@
   .enterprise-button-secondary {
     @apply bg-transparent hover:bg-[var(--bg-primary)] text-[var(--text-primary)] border border-[var(--border-color)] font-semibold py-2.5 px-5 rounded-lg transition-all active:scale-95;
   }
+
+  /* Suppress iOS long-press callout on drag handles */
+  .touch-none {
+    -webkit-touch-callout: none;
+  }
+
+  /* Re-enable text selection inside inputs even when parent has select-none */
+  .select-none input,
+  .select-none textarea {
+    user-select: text;
+    -webkit-user-select: text;
+  }
 }

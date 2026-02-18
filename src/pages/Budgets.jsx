@@ -117,7 +117,7 @@ function Budgets({ selectedMonth }) {
                     <h2 className="text-2xl lg:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">
                         Budgets
                     </h2>
-                    <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium italic">Weave your financial threads into a strong spending plan.</p>
+                    <p className="text-sm lg:text-base text-[var(--text-secondary)] mt-1 font-medium italic">Track and manage your spending limits.</p>
                 </div>
             </header>
 

@@ -10,6 +10,7 @@ import Categories from './pages/Categories';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Checklist from './pages/Checklist';
+import ChecklistImport from './pages/ChecklistImport';
 
 function App() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -70,6 +71,14 @@ function App() {
                 <AuthenticatedLayout selectedDate={selectedDate} setSelectedDate={setSelectedDate}>
                   <Checklist selectedMonth={selectedDate} />
                 </AuthenticatedLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checklist/import/:shareId"
+            element={
+              <ProtectedRoute>
+                <ChecklistImport />
               </ProtectedRoute>
             }
           />

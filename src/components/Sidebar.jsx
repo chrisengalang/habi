@@ -40,11 +40,16 @@ const Sidebar = ({ isOpen, toggleSidebar, onItemClick }) => {
             {/* Logo Area */}
             <div className={`flex items-center border-b border-slate-700/50 transition-all duration-300 ${isOpen ? 'justify-between p-6' : 'justify-center py-6 px-0'}`}>
                 {isOpen && (
-                    <div className="animate-in fade-in duration-300">
-                        <h1 className="font-bold text-2xl text-blue-400 whitespace-nowrap lowercase">
-                            habi
-                        </h1>
-                        <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-0.5">Family Weaver</p>
+                    <div className="animate-in fade-in duration-300 flex items-center gap-3">
+                        <img src="/logo.svg" alt="habi logo" className="w-9 h-9 rounded-lg" />
+                        <div>
+                            <h1 className="font-bold text-2xl text-blue-400 whitespace-nowrap lowercase">
+                                fintrack
+                            </h1>
+                            <span className="text-[10px] font-semibold text-slate-500 lowercase tracking-widest">
+                                v{__APP_VERSION__}
+                            </span>
+                        </div>
                     </div>
                 )}
                 <button
@@ -88,7 +93,12 @@ const Sidebar = ({ isOpen, toggleSidebar, onItemClick }) => {
             </nav>
 
             {/* Footer / Sign Out */}
-            <div className="absolute bottom-8 left-0 w-full px-4">
+            <div className="absolute bottom-8 left-0 w-full px-4 space-y-3">
+                {isOpen && (
+                    <div className="text-center">
+                        <span className="text-[10px] font-semibold text-slate-600 lowercase tracking-widest">v{__APP_VERSION__}</span>
+                    </div>
+                )}
                 <button
                     onClick={handleLogout}
                     className={`flex items-center w-full transition-all group ${isOpen ? 'p-3 rounded-xl' : 'p-3 justify-center rounded-2xl'} hover:bg-red-500/10 text-slate-400 hover:text-red-400`}
