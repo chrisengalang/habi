@@ -26,6 +26,7 @@ const COLLECTION_BUDGET_ITEMS = "budgetItems";
 const COLLECTION_CHECKLIST_ITEMS = "checklistItems";
 const COLLECTION_CHECKLIST_SHARES = "checklistShares";
 const COLLECTION_USERS = "users";
+const COLLECTION_GOALS = "goals";
 
 const api = {
     // User Profiles
@@ -570,6 +571,68 @@ const api = {
                 .sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
             callback(items);
         });
+    },
+
+    // Goals
+    getGoals: async (userId) => {
+        const q = query(
+            collection(db, COLLECTION_GOALS),
+            where("userId", "==", userId)
+        );
+        const snap = await getDocs(q);
+        const goals = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        return goals.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
+    },
+
+    addGoal: async (userId, data) => {
+        const docData = {
+            name: data.name.trim(),
+            targetAmount: parseFloat(data.targetAmount),
+            savedAmount: parseFloat(data.savedAmount) || 0,
+            targetDate: data.targetDate || null,
+            userId,
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now()
+        };
+        const docRef = await addDoc(collection(db, COLLECTION_GOALS), docData);
+        return { id: docRef.id, ...docData };
+    },
+
+    updateGoal: async (userId, id, data) => {
+        const docRef = doc(db, COLLECTION_GOALS, id);
+        const snap = await getDoc(docRef);
+        if (!snap.exists()) throw new Error("Goal not found");
+        if (snap.data().userId !== userId) throw new Error("Unauthorized");
+
+        const updateData = {
+            name: data.name.trim(),
+            targetAmount: parseFloat(data.targetAmount),
+            savedAmount: parseFloat(data.savedAmount) || 0,
+            targetDate: data.targetDate || null,
+            updatedAt: Timestamp.now()
+        };
+        await updateDoc(docRef, updateData);
+        return { id, ...updateData };
+    },
+
+    logGoalContribution: async (userId, id, amount) => {
+        const docRef = doc(db, COLLECTION_GOALS, id);
+        const snap = await getDoc(docRef);
+        if (!snap.exists()) throw new Error("Goal not found");
+        if (snap.data().userId !== userId) throw new Error("Unauthorized");
+
+        await updateDoc(docRef, {
+            savedAmount: increment(parseFloat(amount)),
+            updatedAt: Timestamp.now()
+        });
+    },
+
+    deleteGoal: async (userId, id) => {
+        const docRef = doc(db, COLLECTION_GOALS, id);
+        const snap = await getDoc(docRef);
+        if (!snap.exists()) return;
+        if (snap.data().userId !== userId) throw new Error("Unauthorized");
+        await deleteDoc(docRef);
     },
 
     // Bridge for existing code - requires userId in config or data

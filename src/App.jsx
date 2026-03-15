@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Checklist from './pages/Checklist';
 import ChecklistImport from './pages/ChecklistImport';
+import Goals from './pages/Goals';
 
 function App() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -70,6 +71,16 @@ function App() {
               <ProtectedRoute>
                 <AuthenticatedLayout selectedDate={selectedDate} setSelectedDate={setSelectedDate}>
                   <Checklist selectedMonth={selectedDate} />
+                </AuthenticatedLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/goals"
+            element={
+              <ProtectedRoute>
+                <AuthenticatedLayout selectedDate={selectedDate} setSelectedDate={setSelectedDate}>
+                  <Goals />
                 </AuthenticatedLayout>
               </ProtectedRoute>
             }

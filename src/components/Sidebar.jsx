@@ -7,7 +7,8 @@ import {
     ChevronLeft,
     ChevronRight,
     LogOut,
-    ClipboardList
+    ClipboardList,
+    Target
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -30,6 +31,7 @@ const Sidebar = ({ isOpen, toggleSidebar, onItemClick }) => {
         { path: '/transactions', label: 'Transactions', icon: Receipt },
         { path: '/categories', label: 'Categories', icon: Tags },
         { path: '/checklist', label: 'Checklist', icon: ClipboardList },
+        { path: '/goals', label: 'Goals', icon: Target },
     ];
 
     return (
